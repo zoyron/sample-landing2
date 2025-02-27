@@ -19,7 +19,7 @@ The application showcases various 3D models converted to particles, displayed in
 
 ```bash
 # Clone the repository
-git clone https://github.com/sentigen/sentigen.git
+git clone https://github.com/zoyron/sentigen.git
 
 # Navigate to the project directory
 cd sentigen
