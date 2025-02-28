@@ -28,41 +28,41 @@ const SECTIONS: SectionData[] = [
   },
   {
     id: "section-2",
+    title: "FUTURE-PROOF SOLUTIONS",
+    description:
+      "Stay ahead of the curve with technology that evolves with your needs. Our continuous updates and scalable architecture ensure your business is always equipped with the latest innovations.",
+    modelPath: "/models/blob/model3.gltf",
+    fullWidthModel: false, // This section will use the model as full background
+    scale: 0.7,
+    rotationSpeed: { x: 0, y: 0.0008, z: 0 },
+    initialRotation: { x: 0, y: 0, z: 0 },
+    particleSize: 0.035,
+    particleColor: "#800080",
+    particleDensity: 0.25,
+    useShaderAnimation: true,
+    // More dynamic animation with stronger glow
+    animationIntensity: 0,
+    animationSpeed: 0.0,
+    glowIntensity: 2.5,
+  },
+  {
+    id: "section-3",
     title: "SEAMLESS INTEGRATION",
     description:
       "Effortlessly connect our platform with your existing tools and workflows. Our API-first approach ensures compatibility with your tech stack, minimizing disruption while maximizing value.",
     modelPath: "/models/model5.glb",
     fullWidthModel: true, // This section will use the side model layout
-    scale: 2,
+    scale: 0.5,
     rotationSpeed: { x: 0, y: 0, z: 0 },
-    initialRotation: { x: 0, y: 1.5, z: 0.5 },
-    particleSize: 0.125,
+    initialRotation: { x: 0.75, y: 0, z: 0 },
+    particleSize: 0.05,
     // particleColor: "#ff4f9c", // Pink color specified - will override original colors
-    particleDensity: 1.2,
+    particleDensity: 0.25,
     useShaderAnimation: true,
     // Faster but more subtle animation
-    animationIntensity: 0.25,
-    animationSpeed: 0.25,
+    animationIntensity: 0.5,
+    animationSpeed: 0.125,
     glowIntensity: 1.0,
-  },
-  {
-    id: "section-3",
-    title: "FUTURE-PROOF SOLUTIONS",
-    description:
-      "Stay ahead of the curve with technology that evolves with your needs. Our continuous updates and scalable architecture ensure your business is always equipped with the latest innovations.",
-    modelPath: "/models/model4.glb",
-    fullWidthModel: false, // This section will use the model as full background
-    scale: 0.05,
-    rotationSpeed: { x: 0, y: -0.002, z: 0 },
-    initialRotation: { x: 0, y: 0, z: 0 },
-    particleSize: 0.518,
-    // No particleColor specified - will use original colors from the model
-    particleDensity: 0.75,
-    useShaderAnimation: true,
-    // More dynamic animation with stronger glow
-    animationIntensity: 0.03,
-    animationSpeed: 0.05,
-    glowIntensity: 1.5,
   },
 ];
 

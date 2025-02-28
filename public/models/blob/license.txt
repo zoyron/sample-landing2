@@ -1,0 +1,11 @@
+Model Information:
+* title:	Blob
+* source:	https://sketchfab.com/3d-models/blob-85af955981f642f9aefc3f7eb4ca7ac1
+* author:	Aiekick (https://sketchfab.com/Aiekick)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Blob" (https://sketchfab.com/3d-models/blob-85af955981f642f9aefc3f7eb4ca7ac1) by Aiekick (https://sketchfab.com/Aiekick) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
