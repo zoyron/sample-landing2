@@ -10,6 +10,7 @@ interface SectionProps {
   modelPath: string;
   reverse?: boolean;
   index: number;
+  fullWidthModel?: boolean; // New property to control if model fills entire background
   scale?: number;
   rotationSpeed?: {
     x?: number;
@@ -21,11 +22,15 @@ interface SectionProps {
     y?: number;
     z?: number;
   };
-  // New particle-specific props
+  // Particle-specific props
   particleSize?: number;
-  particleColor?: string;
+  particleColor?: string; // Optional
   particleDensity?: number;
   useShaderAnimation?: boolean;
+  // New animation enhancement props
+  animationIntensity?: number;
+  animationSpeed?: number;
+  glowIntensity?: number;
 }
 
 export default function Section({
@@ -34,19 +39,63 @@ export default function Section({
   modelPath,
   reverse = false,
   index,
+  fullWidthModel = false, // Default to false to maintain current behavior
   scale = 1,
   rotationSpeed = { x: 0, y: 0.002, z: 0 },
   initialRotation = { x: 0, y: 0, z: 0 },
-  // Default values for new particle props
+  // Particle props
   particleSize = 0.02,
-  particleColor = "#4f9cff",
+  particleColor,
   particleDensity = 0.5,
   useShaderAnimation = true,
+  // Enhanced animation props with sensible defaults
+  animationIntensity = 0.02,
+  animationSpeed = 0.5,
+  glowIntensity = 1.2,
 }: SectionProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: false, amount: 0.3 });
   const [isModelLoaded, setIsModelLoaded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+
+  // Adjust animation parameters based on section index for variety
+  const getAnimationParams = (index: number) => {
+    const params = {
+      animationIntensity: animationIntensity,
+      animationSpeed: animationSpeed,
+      glowIntensity: glowIntensity,
+    };
+
+    // Each section gets slightly different animation parameters
+    switch (index % 3) {
+      case 0: // First type of section
+        return {
+          ...params,
+          animationIntensity: animationIntensity * 1.2,
+          animationSpeed: animationSpeed * 0.8,
+          glowIntensity: glowIntensity * 1.1,
+        };
+      case 1: // Second type of section
+        return {
+          ...params,
+          animationIntensity: animationIntensity * 0.8,
+          animationSpeed: animationSpeed * 1.2,
+          glowIntensity: glowIntensity * 0.9,
+        };
+      case 2: // Third type of section
+        return {
+          ...params,
+          animationIntensity: animationIntensity,
+          animationSpeed: animationSpeed * 1.5,
+          glowIntensity: glowIntensity * 1.3,
+        };
+      default:
+        return params;
+    }
+  };
+
+  // Get animation parameters for this section
+  const animationParams = getAnimationParams(index);
 
   // Check if we're on mobile
   useEffect(() => {
@@ -74,30 +123,36 @@ export default function Section({
     },
   };
 
-  // Generate a unique color based on section index if color not specified
-  const particleColorToUse = particleColor || getColorFromIndex(index);
+  // Configuration constant to control whether to use original colors
+  const SECTIONS_USE_ORIGINAL_COLORS = true;
+
+  // Generate a unique color based on section index if color not specified (for backwards compatibility)
+  const particleColorToUse =
+    particleColor ||
+    (SECTIONS_USE_ORIGINAL_COLORS ? undefined : getColorFromIndex(index));
 
   return (
     <section
       ref={sectionRef}
       className="min-h-screen w-full relative flex items-center overflow-hidden bg-black"
     >
-      {/* Model container as background - with positioning for desktop */}
+      {/* Model container as background - with positioning logic for fullWidthModel */}
       <div
         className={cn(
           "absolute inset-0 w-full h-full",
-          // On desktop, position the model to left or right side
-          !isMobile && "md:flex md:items-center",
-          !isMobile && reverse ? "md:justify-start" : "md:justify-end"
+          // Only position to left/right if not fullWidthModel
+          !isMobile && !fullWidthModel && "md:flex md:items-center",
+          !isMobile &&
+            !fullWidthModel &&
+            (reverse ? "md:justify-start" : "md:justify-end")
         )}
       >
         <div
           className={cn(
             "w-full h-full",
-            // On desktop, size the model container to take half the screen
-            !isMobile && "md:w-2/3 md:h-[600px]",
-            // On desktop, shift the model slightly for better visual alignment
-            !isMobile && reverse ? "md:ml-12" : "md:mr-12"
+            // Only resize if not fullWidthModel
+            !isMobile && !fullWidthModel && "md:w-2/3 md:h-[600px]",
+            !isMobile && !fullWidthModel && (reverse ? "md:ml-12" : "md:mr-12")
           )}
         >
           <ParticleModelViewer
@@ -110,21 +165,29 @@ export default function Section({
             particleColor={particleColorToUse}
             particleDensity={particleDensity}
             useShaderAnimation={useShaderAnimation}
+            // Pass enhanced animation parameters
+            animationIntensity={animationParams.animationIntensity}
+            animationSpeed={animationParams.animationSpeed}
+            glowIntensity={animationParams.glowIntensity}
             onModelLoaded={() => setIsModelLoaded(true)}
           />
         </div>
       </div>
 
-      {/* Content positioned over the model */}
+      {/* Content positioned over the model - adjust positioning for fullWidthModel */}
       <div className="relative w-full z-10 px-4 py-16 md:py-0">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center">
-          {/* Text content - positioned to the opposite side of the model on desktop */}
+          {/* Text content - adjust positioning for fullWidthModel */}
           <motion.div
             className={cn(
               "w-full md:w-1/2 space-y-6 p-6 rounded-lg",
               "bg-black/5 backdrop-blur-[1px]", // Very subtle background effect
-              // On desktop, position the text to the opposite side of the model
-              !isMobile && reverse ? "md:ml-auto" : "md:mr-auto"
+              // If fullWidthModel, center the text
+              fullWidthModel && "md:mx-auto",
+              // Otherwise, position the text to the opposite side of the model
+              !fullWidthModel && !isMobile && reverse
+                ? "md:ml-auto"
+                : "md:mr-auto"
             )}
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
@@ -146,7 +209,7 @@ export default function Section({
   );
 }
 
-// Helper function to generate colors based on section index
+// Helper function to generate colors based on section index (for backwards compatibility)
 function getColorFromIndex(index: number): string {
   const colors = [
     "#4f9cff", // blue

@@ -2,10 +2,10 @@
 
 import { useEffect } from "react";
 import Section from "@/components/section";
-import { SectionData } from "@/types";
 import { motion } from "framer-motion";
+import { SectionData } from "@/types"; // Make sure this import path is correct
 
-// Enhanced data for the sections with particle properties
+// Enhanced data for the sections with new animation properties
 const SECTIONS: SectionData[] = [
   {
     id: "section-1",
@@ -13,41 +13,56 @@ const SECTIONS: SectionData[] = [
     description:
       "Launch tokenized AI agents in three clicks. Fuses natural evolution and state-of-the-art systems for AI that feels alive.",
     modelPath: "/models/model1.glb",
+    fullWidthModel: false, // This section will use the model as full background
     scale: 1.5,
     rotationSpeed: { x: 0, y: 0.002, z: 0 },
     initialRotation: { x: 0, y: 0, z: 0 },
     particleSize: 0.07,
-    particleColor: "#999c00",
-    particleDensity: 0.5, // Lower density for better performance
+    // No particleColor specified - will use original colors from the model
+    particleDensity: 0.5,
     useShaderAnimation: true,
+    // Enhanced animation parameters for more organic movement
+    animationIntensity: 0.025,
+    animationSpeed: 0.4,
+    glowIntensity: 1.3,
   },
   {
     id: "section-2",
     title: "SEAMLESS INTEGRATION",
     description:
       "Effortlessly connect our platform with your existing tools and workflows. Our API-first approach ensures compatibility with your tech stack, minimizing disruption while maximizing value.",
-    modelPath: "/models/model6.gltf",
+    modelPath: "/models/model5.glb",
+    fullWidthModel: true, // This section will use the side model layout
     scale: 2,
-    rotationSpeed: { x: 0, y: 0.0003, z: 0 },
-    initialRotation: { x: 0, y: 0, z: 0 },
-    particleSize: 0.025,
-    particleColor: "#ff4f9c", // pink
-    particleDensity: 0.5,
+    rotationSpeed: { x: 0, y: 0, z: 0 },
+    initialRotation: { x: 0, y: 1.5, z: 0.5 },
+    particleSize: 0.125,
+    // particleColor: "#ff4f9c", // Pink color specified - will override original colors
+    particleDensity: 1.2,
     useShaderAnimation: true,
+    // Faster but more subtle animation
+    animationIntensity: 0.25,
+    animationSpeed: 0.25,
+    glowIntensity: 1.0,
   },
   {
     id: "section-3",
     title: "FUTURE-PROOF SOLUTIONS",
     description:
       "Stay ahead of the curve with technology that evolves with your needs. Our continuous updates and scalable architecture ensure your business is always equipped with the latest innovations.",
-    modelPath: "/models/model5.glb",
-    scale: 0.9,
-    rotationSpeed: { x: 0.001, y: -0.002, z: 0 },
-    initialRotation: { x: 0.1, y: 0, z: 0.1 },
-    particleSize: 0.018,
-    particleColor: "#ffaf4f", // orange
+    modelPath: "/models/model4.glb",
+    fullWidthModel: false, // This section will use the model as full background
+    scale: 0.05,
+    rotationSpeed: { x: 0, y: -0.002, z: 0 },
+    initialRotation: { x: 0, y: 0, z: 0 },
+    particleSize: 0.518,
+    // No particleColor specified - will use original colors from the model
     particleDensity: 0.75,
     useShaderAnimation: true,
+    // More dynamic animation with stronger glow
+    animationIntensity: 0.03,
+    animationSpeed: 0.05,
+    glowIntensity: 1.5,
   },
 ];
 
@@ -113,7 +128,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Alternating Sections with Particle Models */}
+      {/* Alternating Sections with Enhanced Particle Models */}
       {SECTIONS.map((section, index) => (
         <Section
           key={section.id}
@@ -122,6 +137,7 @@ export default function Home() {
           modelPath={section.modelPath}
           reverse={index % 2 !== 0}
           index={index}
+          fullWidthModel={section.fullWidthModel} // Pass the new property
           scale={section.scale}
           rotationSpeed={section.rotationSpeed}
           initialRotation={section.initialRotation}
@@ -129,6 +145,10 @@ export default function Home() {
           particleColor={section.particleColor}
           particleDensity={section.particleDensity}
           useShaderAnimation={section.useShaderAnimation}
+          // Pass new animation parameters
+          animationIntensity={section.animationIntensity}
+          animationSpeed={section.animationSpeed}
+          glowIntensity={section.glowIntensity}
         />
       ))}
 

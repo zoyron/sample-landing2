@@ -1,8 +1,11 @@
+// src/types.ts (or wherever your types file is located)
+
 export interface SectionData {
   id: string;
   title: string;
   description: string;
   modelPath: string;
+  fullWidthModel?: boolean;
   scale?: number;
   rotationSpeed?: {
     x?: number;
@@ -14,9 +17,13 @@ export interface SectionData {
     y?: number;
     z?: number;
   };
-  // New particle-specific properties
-  particleSize?: number; // Size of each particle
-  particleColor?: string; // Color of particles (hex color)
-  particleDensity?: number; // How dense the particles should be (0-1)
-  useShaderAnimation?: boolean; // Whether to use shader-based animation
+  // Make sure to include all particle-specific properties
+  particleSize?: number;
+  particleColor?: string; // This was missing
+  particleDensity?: number;
+  useShaderAnimation?: boolean;
+  // Animation enhancement properties
+  animationIntensity?: number;
+  animationSpeed?: number;
+  glowIntensity?: number;
 }
