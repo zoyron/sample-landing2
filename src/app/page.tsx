@@ -13,7 +13,7 @@ const SECTIONS: SectionData[] = [
     description:
       "Launch tokenized AI agents in three clicks. Fuses natural evolution and state-of-the-art systems for AI that feels alive.",
     modelPath: "/models/model1.glb",
-    scale: 2.5,
+    scale: 1.5,
     rotationSpeed: { x: 0, y: 0.002, z: 0 },
     initialRotation: { x: 0, y: 0, z: 0 },
     particleSize: 0.07,
@@ -22,7 +22,7 @@ const SECTIONS: SectionData[] = [
     useShaderAnimation: true,
   },
   {
-    id: "section-3",
+    id: "section-2",
     title: "SEAMLESS INTEGRATION",
     description:
       "Effortlessly connect our platform with your existing tools and workflows. Our API-first approach ensures compatibility with your tech stack, minimizing disruption while maximizing value.",
@@ -36,7 +36,7 @@ const SECTIONS: SectionData[] = [
     useShaderAnimation: true,
   },
   {
-    id: "section-4",
+    id: "section-3",
     title: "FUTURE-PROOF SOLUTIONS",
     description:
       "Stay ahead of the curve with technology that evolves with your needs. Our continuous updates and scalable architecture ensure your business is always equipped with the latest innovations.",
@@ -46,7 +46,7 @@ const SECTIONS: SectionData[] = [
     initialRotation: { x: 0.1, y: 0, z: 0.1 },
     particleSize: 0.018,
     particleColor: "#ffaf4f", // orange
-    particleDensity: 0.25,
+    particleDensity: 0.75,
     useShaderAnimation: true,
   },
 ];
