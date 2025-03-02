@@ -1,5 +1,4 @@
-// src/types.ts (or wherever your types file is located)
-
+// src/types.ts
 export interface SectionData {
   id: string;
   title: string;
@@ -17,9 +16,9 @@ export interface SectionData {
     y?: number;
     z?: number;
   };
-  // Make sure to include all particle-specific properties
+  // Particle-specific properties
   particleSize?: number;
-  particleColor?: string; // This was missing
+  particleColor?: string;
   particleDensity?: number;
   useShaderAnimation?: boolean;
   // Animation enhancement properties
