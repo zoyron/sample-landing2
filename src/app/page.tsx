@@ -9,13 +9,13 @@ import ParticleModelViewer from "@/components/model-viewer";
 const SECTIONS: SectionData[] = [
   {
     id: "section-1",
-    title: "CODE BECOMES CONSCIOUS",
+    title: "Laurem ipsum",
     description:
       "Launch tokenized AI agents in three clicks. Fuses natural evolution and state-of-the-art systems for AI that feels alive.",
     modelPath: "/models/model1.glb",
-    fullWidthModel: false,
-    scale: 2.5,
-    rotationSpeed: { x: 0, y: 0.002, z: 0 },
+    fullWidthModel: true,
+    scale: 2.0,
+    rotationSpeed: { x: 0, y: 0.02, z: 0 },
     initialRotation: { x: 0, y: 0, z: 0 },
     particleSize: 0.07,
     particleDensity: 0.5,
@@ -26,38 +26,39 @@ const SECTIONS: SectionData[] = [
   },
   {
     id: "section-2",
+    title: "SEAMLESS INTEGRATION",
+    description:
+      "Effortlessly connect our platform with your existing tools and workflows. Our API-first approach ensures compatibility with your tech stack, minimizing disruption while maximizing value.",
+    modelPath: "/models/model2.glb",
+    fullWidthModel: false,
+    scale: 0.00125,
+    rotationSpeed: { x: 0, y: 1.0, z: 0 },
+    initialRotation: { x: 0, y: 0, z: 2.0 },
+    particleColor: "#880088",
+    particleSize: 0.05,
+    particleDensity: 0.75,
+    useShaderAnimation: true,
+    animationIntensity: 0.25,
+    animationSpeed: 0.5,
+    glowIntensity: 1.0,
+  },
+  {
+    id: "section-3",
     title: "FUTURE-PROOF SOLUTIONS",
     description:
       "Stay ahead of the curve with technology that evolves with your needs. Our continuous updates and scalable architecture ensure your business is always equipped with the latest innovations.",
-    modelPath: "/models/blob/model3.gltf",
+    modelPath: "/models/brain/model3.gltf",
     fullWidthModel: false,
-    scale: 0.7,
+    scale: 1.25,
     rotationSpeed: { x: 0, y: 0.0008, z: 0 },
-    initialRotation: { x: 0, y: 0, z: 0 },
-    particleSize: 0.035,
-    particleColor: "#800080",
-    particleDensity: 0.25,
+    initialRotation: { x: 0, y: 2, z: 0 },
+    particleSize: 0.075,
+    particleColor: "#008380",
+    particleDensity: 2.25,
     useShaderAnimation: true,
     animationIntensity: 0,
     animationSpeed: 0.0,
     glowIntensity: 2.5,
-  },
-  {
-    id: "section-3",
-    title: "SEAMLESS INTEGRATION",
-    description:
-      "Effortlessly connect our platform with your existing tools and workflows. Our API-first approach ensures compatibility with your tech stack, minimizing disruption while maximizing value.",
-    modelPath: "/models/model5.glb",
-    fullWidthModel: false,
-    scale: 0.25,
-    rotationSpeed: { x: 0, y: 0, z: 0 },
-    initialRotation: { x: 0.75, y: 0, z: 0 },
-    particleSize: 0.05,
-    particleDensity: 0.25,
-    useShaderAnimation: true,
-    animationIntensity: 0.5,
-    animationSpeed: 0.125,
-    glowIntensity: 1.0,
   },
 ];
 
@@ -220,60 +221,6 @@ export default function Home() {
           </div>
         </section>
       ))}
-
-      {/* Footer with proper z-index */}
-      <footer className="bg-black/90 text-white py-12 border-t border-gray-800 relative z-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-              <h3 className="text-xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-teal-400 text-transparent bg-clip-text">
-                Company
-              </h3>
-              <ul className="space-y-2 text-gray-300">
-                <li>About Us</li>
-                <li>Careers</li>
-                <li>Contact</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-teal-400 text-transparent bg-clip-text">
-                Product
-              </h3>
-              <ul className="space-y-2 text-gray-300">
-                <li>Features</li>
-                <li>Pricing</li>
-                <li>Testimonials</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-teal-400 text-transparent bg-clip-text">
-                Resources
-              </h3>
-              <ul className="space-y-2 text-gray-300">
-                <li>Blog</li>
-                <li>Documentation</li>
-                <li>Support</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-teal-400 text-transparent bg-clip-text">
-                Legal
-              </h3>
-              <ul className="space-y-2 text-gray-300">
-                <li>Privacy Policy</li>
-                <li>Terms of Service</li>
-                <li>Cookie Policy</li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center">
-            <p className="text-gray-400">
-              &copy; {new Date().getFullYear()} Your Company. All rights
-              reserved.
-            </p>
-          </div>
-        </div>
-      </footer>
     </main>
   );
 }
