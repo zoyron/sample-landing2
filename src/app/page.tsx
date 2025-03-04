@@ -4,6 +4,18 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { SectionData } from "@/types";
 import ParticleModelViewer from "@/components/model-viewer";
+import { Montserrat, Inter } from "next/font/google";
+
+// Font setup
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  variable: "--font-montserrat",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+});
 
 // Enhanced data for the sections with new animation properties
 const SECTIONS: SectionData[] = [
@@ -13,7 +25,7 @@ const SECTIONS: SectionData[] = [
     description:
       "Launch tokenized AI agents in three clicks. Fuses natural evolution and state-of-the-art systems for AI that feels alive.",
     modelPath: "/models/model1.glb",
-    fullWidthModel: true,
+    fullWidthModel: false,
     scale: 2.0,
     rotationSpeed: { x: 0, y: 0.02, z: 0 },
     initialRotation: { x: 0, y: 0, z: 0 },
@@ -150,9 +162,11 @@ export default function Home() {
     const translateX =
       currentPosition + (nextPosition - currentPosition) * sectionProgress;
 
-    // Calculate scale based on section properties
-    const currentScale = currentSection.fullWidthModel ? 1.1 : 0.85;
-    const nextScale = nextSection.fullWidthModel ? 1.1 : 0.85;
+    // Calculate scale based on section properties, with smaller scale for mobile
+    const mobileFactor = isMobile ? 0.7 : 1.0; // Reduce size by 30% on mobile
+    const currentScale =
+      (currentSection.fullWidthModel ? 1.1 : 0.85) * mobileFactor;
+    const nextScale = (nextSection.fullWidthModel ? 1.1 : 0.85) * mobileFactor;
     const scale = currentScale + (nextScale - currentScale) * sectionProgress;
 
     return {
@@ -166,10 +180,12 @@ export default function Home() {
   const particleContainerStyle = getParticlePosition();
 
   return (
-    <main className="relative bg-black/90 text-white">
+    <main
+      className={`relative bg-gradient-to-b from-[#030014] to-[#010108] text-white ${montserrat.variable} ${inter.variable} font-sans`}
+    >
       {/* Fixed background particle system that morphs based on scroll */}
       <div
-        className="fixed inset-0 w-full h-full z-10 pointer-events-none transition-transform duration-300 ease-out"
+        className="fixed inset-0 w-full h-full z-10 pointer-events-none transition-transform duration-500 ease-out"
         style={particleContainerStyle}
         ref={particleContainerRef}
       >
@@ -183,18 +199,24 @@ export default function Home() {
           id={section.id}
           className="min-h-screen w-full relative flex items-center overflow-hidden bg-transparent"
         >
-          {/* Semi-transparent section background */}
+          {/* Semi-transparent section background with enhanced lighting effect */}
           <div className="absolute inset-0 w-full h-full z-5">
-            <div className="absolute inset-0 bg-black/30 backdrop-blur-[1px]"></div>
+            <div className="absolute inset-0 bg-black/25 backdrop-blur-[2px]"></div>
+            {/* Add subtle radial gradient for depth */}
+            <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-black/40 opacity-80"></div>
           </div>
 
           {/* Content positioned over the morphing background with higher z-index */}
-          <div className="relative w-full z-20 px-4 py-16 md:py-0">
+          <div className="relative w-full z-20 px-6 py-16 md:py-0">
             <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center">
               {/* Text content positioned based on section config */}
               <motion.div
-                className={`w-full md:w-1/2 space-y-6 p-6 rounded-lg
-                  bg-black/20 backdrop-blur-[2px]
+                className={`w-full md:w-1/2 space-y-8 p-8 rounded-2xl
+                  ${
+                    isMobile
+                      ? "bg-gradient-to-br from-black/30 to-black/5 backdrop-blur-sm border border-white/5"
+                      : "bg-gradient-to-br from-black/40 to-black/10 backdrop-blur-md border border-white/5 shadow-xl"
+                  }
                   ${
                     section.fullWidthModel
                       ? "md:mx-auto"
@@ -202,20 +224,30 @@ export default function Home() {
                       ? "md:ml-auto"
                       : "md:mr-auto"
                   }`}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: false, amount: 0.3 }}
-                transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+                transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
               >
-                <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-400 to-teal-400 text-transparent bg-clip-text">
+                <div className="inline-block mb-2 px-3 py-1 bg-white/5 backdrop-blur-sm rounded-full border border-white/10">
+                  <p className="text-xs tracking-widest text-cyan-300 font-medium uppercase">
+                    {`Section ${index + 1}`}
+                  </p>
+                </div>
+                <h2 className="text-4xl md:text-5xl font-bold font-montserrat tracking-tight bg-gradient-to-r from-violet-300 via-sky-300 to-emerald-300 text-transparent bg-clip-text">
                   {section.title}
                 </h2>
-                <p className="text-lg text-gray-100 leading-relaxed">
+                <p className="text-lg text-gray-200 leading-relaxed font-inter">
                   {section.description}
                 </p>
-                <button className="bg-blue-600/80 hover:bg-blue-700/80 text-white px-6 py-3 rounded-lg font-semibold transition-colors backdrop-blur-sm">
-                  Learn More
-                </button>
+                <div className="flex flex-wrap gap-4 pt-2">
+                  <button className="bg-gradient-to-r from-sky-500 to-emerald-500 text-white px-6 py-3.5 rounded-xl font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-sky-500/20">
+                    Learn More
+                  </button>
+                  <button className="bg-transparent text-white border border-white/20 hover:border-white/40 px-6 py-3.5 rounded-xl font-semibold transition-all duration-300 hover:bg-white/5">
+                    View Demo
+                  </button>
+                </div>
               </motion.div>
             </div>
           </div>
