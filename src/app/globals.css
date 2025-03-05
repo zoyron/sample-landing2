@@ -2,14 +2,155 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* Custom color variables */
+  --color-purple: #6e56cf;
+  --color-purple-light: #a78bfa;
+  --color-teal: #23a094;
+  --color-teal-light: #5eead4;
+  --color-rose: #dc3a84;
+  --color-rose-light: #fb7185;
+
+  /* Background colors */
+  --bg-dark: #090419;
+  --bg-darker: #05010d;
+}
+
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 1rem;
 }
 
 body {
-  @apply bg-white text-gray-900 antialiased;
+  @apply bg-black text-gray-100 antialiased;
+  background: linear-gradient(to bottom, var(--bg-dark), var(--bg-darker));
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
 .smooth-scroll {
   scroll-behavior: smooth;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0416;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Custom text shadow for headings */
+.text-glow {
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.15);
+}
+
+/* Glowing border effect */
+.border-glow {
+  box-shadow: 0 0 15px rgba(110, 86, 207, 0.3);
+  transition: box-shadow 0.3s ease;
+}
+
+.border-glow:hover {
+  box-shadow: 0 0 25px rgba(110, 86, 207, 0.5);
+}
+
+/* Custom gradient backgrounds */
+.bg-gradient-purple {
+  background: linear-gradient(
+    135deg,
+    var(--color-purple-light),
+    var(--color-purple)
+  );
+}
+
+.bg-gradient-teal {
+  background: linear-gradient(
+    135deg,
+    var(--color-teal-light),
+    var(--color-teal)
+  );
+}
+
+.bg-gradient-rose {
+  background: linear-gradient(
+    135deg,
+    var(--color-rose-light),
+    var(--color-rose)
+  );
+}
+
+/* Custom animation for particle breathing effect */
+@keyframes breath {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+.particle-breath {
+  animation: breath 8s ease-in-out infinite;
+}
+
+/* Scroll indicator animation */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.scroll-indicator {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Enhanced section transitions */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive typography */
+@media (max-width: 640px) {
+  h2 {
+    font-size: 2rem;
+    line-height: 1.2;
+  }
+
+  p {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+}
+
+/* Custom glass effect */
+.glass-panel {
+  background: rgba(9, 4, 25, 0.3);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
 }

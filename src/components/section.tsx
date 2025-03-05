@@ -43,11 +43,6 @@ interface SectionProps {
   animationIntensity?: number;
   animationSpeed?: number;
   glowIntensity?: number;
-  // New props for design enhancement
-  accentColor?: string;
-  secondaryColor?: string;
-  ctaText?: string;
-  secondaryCtaText?: string;
 }
 
 export default function Section({
@@ -69,11 +64,6 @@ export default function Section({
   animationIntensity = 0.02,
   animationSpeed = 0.5,
   glowIntensity = 1.2,
-  // Design enhancement props
-  accentColor = "sky", // Default accent color
-  secondaryColor = "emerald", // Default secondary color
-  ctaText = "Learn More",
-  secondaryCtaText = "View Demo",
 }: SectionProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: false, amount: 0.3 });
@@ -159,58 +149,64 @@ export default function Section({
     }),
   };
 
-  // Configuration constant to control whether to use original colors
-  const SECTIONS_USE_ORIGINAL_COLORS = true;
-
-  // Generate a unique color based on section index if color not specified (for backwards compatibility)
-  const particleColorToUse =
-    particleColor ||
-    (SECTIONS_USE_ORIGINAL_COLORS ? undefined : getColorFromIndex(index));
-
-  // Get colors for gradients based on section props or index
-  const getGradientColors = () => {
-    // Predefined color pairs for variety
-    const colorPairs = [
-      { from: "violet", via: "sky", to: "emerald" },
-      { from: "rose", via: "fuchsia", to: "indigo" },
-      { from: "amber", via: "orange", to: "rose" },
-      { from: "emerald", via: "teal", to: "blue" },
-      { from: "blue", via: "indigo", to: "purple" },
+  // Get color scheme based on section index
+  const getColorScheme = (index: number) => {
+    const schemes = [
+      {
+        main: "#6e56cf", // Lavender purple
+        accent: "#a78bfa",
+        shadow: "rgba(110, 86, 207, 0.3)",
+      },
+      {
+        main: "#23a094", // Teal
+        accent: "#5eead4",
+        shadow: "rgba(35, 160, 148, 0.3)",
+      },
+      {
+        main: "#dc3a84", // Rose pink
+        accent: "#fb7185",
+        shadow: "rgba(220, 58, 132, 0.3)",
+      },
     ];
 
-    return colorPairs[index % colorPairs.length];
+    return schemes[index % schemes.length];
   };
 
-  const gradientColors = getGradientColors();
+  const colorScheme = getColorScheme(index);
+
+  // Override particleColor if not provided
+  const particleColorToUse = particleColor || colorScheme.main;
 
   return (
     <section
       ref={sectionRef}
-      className={`min-h-screen w-full relative flex items-center overflow-hidden bg-gradient-to-b from-[#030014] to-[#010108] ${montserrat.variable} ${inter.variable}`}
+      className={`min-h-screen w-full relative flex items-center overflow-hidden bg-gradient-to-b from-[#090419] to-[#05010d] ${montserrat.variable} ${inter.variable}`}
     >
       {/* Subtle background elements */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
-        {/* Gradient layer */}
+        {/* Dark gradient layer */}
         <div className="absolute inset-0 bg-gradient-to-tr from-black/90 via-black/90 to-black/60 z-0"></div>
 
-        {/* Subtle grid pattern */}
-        <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] bg-repeat opacity-10 z-0"></div>
+        {/* Very subtle dot pattern */}
+        <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] bg-repeat opacity-5 z-0"></div>
 
         {/* Glow effect in corner opposite to content */}
         <div
-          className={`absolute w-96 h-96 rounded-full blur-3xl opacity-10 z-0
-          ${!reverse ? "top-0 left-0" : "bottom-0 right-0"}
-          bg-gradient-to-r from-${gradientColors.from}-500/20 to-${
-            gradientColors.to
-          }-500/10`}
+          className="absolute w-96 h-96 rounded-full blur-3xl opacity-10 z-0"
+          style={{
+            background: `radial-gradient(circle, ${colorScheme.accent}20 0%, transparent 70%)`,
+            top: !reverse ? "10%" : "auto",
+            bottom: reverse ? "10%" : "auto",
+            left: !reverse ? "10%" : "auto",
+            right: reverse ? "10%" : "auto",
+          }}
         ></div>
       </div>
 
-      {/* Model container as background - with positioning logic for fullWidthModel */}
+      {/* Model container with improved positioning */}
       <div
         className={cn(
           "absolute inset-0 w-full h-full z-1",
-          // Only position to left/right if not fullWidthModel
           !isMobile && !fullWidthModel && "md:flex md:items-center",
           !isMobile &&
             !fullWidthModel &&
@@ -220,10 +216,7 @@ export default function Section({
         <div
           className={cn(
             "w-full h-full",
-            // Apply sizing based on mobile and fullWidthModel status
-            isMobile
-              ? "scale-75" // Make model 75% of original size on mobile
-              : !fullWidthModel && "md:w-2/3 md:h-[600px]",
+            isMobile ? "scale-75" : !fullWidthModel && "md:w-2/3 md:h-[600px]",
             !isMobile && !fullWidthModel && (reverse ? "md:ml-12" : "md:mr-12")
           )}
         >
@@ -237,7 +230,6 @@ export default function Section({
             particleColor={particleColorToUse}
             particleDensity={particleDensity}
             useShaderAnimation={useShaderAnimation}
-            // Pass enhanced animation parameters
             animationIntensity={animationParams.animationIntensity}
             animationSpeed={animationParams.animationSpeed}
             glowIntensity={animationParams.glowIntensity}
@@ -246,19 +238,16 @@ export default function Section({
         </div>
       </div>
 
-      {/* Content positioned over the model with improved design */}
+      {/* Content with more minimal, elegant design */}
       <div className="relative w-full z-10 px-6 py-16 md:py-0">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center">
-          {/* Text content with enhanced design */}
           <motion.div
             className={cn(
-              "w-full md:w-1/2 space-y-8 p-8 rounded-2xl",
+              "w-full max-w-xl space-y-8 p-8 rounded-3xl",
               isMobile
-                ? "bg-gradient-to-br from-black/30 to-black/5 backdrop-blur-sm border border-white/5"
-                : "bg-gradient-to-br from-black/40 to-black/10 backdrop-blur-md border border-white/5 shadow-2xl",
-              // If fullWidthModel, center the text
+                ? "bg-gradient-to-br from-black/20 to-black/5 backdrop-blur-sm border border-white/10"
+                : "bg-gradient-to-br from-black/30 via-black/20 to-transparent backdrop-blur-md border border-white/10",
               fullWidthModel && "md:mx-auto",
-              // Otherwise, position the text to the opposite side of the model
               !fullWidthModel && !isMobile && reverse
                 ? "md:ml-auto"
                 : "md:mr-auto"
@@ -267,98 +256,73 @@ export default function Section({
             animate={isInView ? "visible" : "hidden"}
             variants={textVariants}
           >
-            {/* Section indicator label */}
+            {/* Minimalist section indicator */}
             <motion.div
-              className="inline-block mb-2 px-3 py-1 bg-white/5 backdrop-blur-sm rounded-full border border-white/10"
+              className="mb-2 opacity-60"
               custom={0}
               variants={childVariants}
             >
-              <p
-                className={`text-xs tracking-widest text-${gradientColors.from}-300 font-medium uppercase`}
-              >
-                {`Section ${index + 1}`}
-              </p>
+              <div className="h-px w-16 bg-gradient-to-r from-transparent via-white to-transparent"></div>
             </motion.div>
 
-            {/* Title with gradient */}
+            {/* Title with custom gradient */}
             <motion.h2
-              className={`text-4xl md:text-5xl font-bold font-montserrat tracking-tight 
-                bg-gradient-to-r from-${gradientColors.from}-300 via-${gradientColors.via}-300 to-${gradientColors.to}-300 
-                text-transparent bg-clip-text`}
+              className="text-4xl md:text-5xl font-bold font-montserrat tracking-tight"
               custom={1}
               variants={childVariants}
+              style={{
+                background: `linear-gradient(to right, ${colorScheme.accent}, ${colorScheme.main})`,
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
             >
               {title}
             </motion.h2>
 
             {/* Description */}
             <motion.p
-              className="text-lg text-gray-200 leading-relaxed font-inter"
+              className="text-lg text-gray-300 leading-relaxed font-inter tracking-wide"
               custom={2}
               variants={childVariants}
             >
               {description}
             </motion.p>
 
-            {/* Call-to-action buttons */}
+            {/* Subtle separator line */}
             <motion.div
-              className="flex flex-wrap gap-4 pt-2"
+              className="h-px w-full bg-gradient-to-r from-transparent via-white/20 to-transparent"
               custom={3}
               variants={childVariants}
-            >
-              <button
-                className={`bg-gradient-to-r from-${gradientColors.from}-500 to-${gradientColors.to}-500 
-                  text-white px-6 py-3.5 rounded-xl font-semibold transition-all duration-300 
-                  hover:scale-105 hover:shadow-lg hover:shadow-${gradientColors.from}-500/20`}
-              >
-                {ctaText}
-              </button>
-              <button
-                className="bg-transparent text-white border border-white/20 hover:border-white/40 
-                  px-6 py-3.5 rounded-xl font-semibold transition-all duration-300 hover:bg-white/5"
-              >
-                {secondaryCtaText}
-              </button>
-            </motion.div>
+            ></motion.div>
 
-            {/* Optional feature list */}
-            <motion.div className="pt-4" custom={4} variants={childVariants}>
-              <ul className="space-y-3">
-                {[1, 2, 3].map((item, i) => (
-                  <li key={i} className="flex items-start">
-                    <span
-                      className={`inline-flex items-center justify-center w-6 h-6 mr-3 rounded-full bg-${gradientColors.from}-500/20 text-${gradientColors.from}-400`}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                        className="w-4 h-4"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </span>
-                    <span className="text-sm text-gray-300">
-                      Feature point {item} related to this section
-                    </span>
-                  </li>
-                ))}
-              </ul>
+            {/* Section indicator in minimal form */}
+            <motion.div
+              className="flex items-center space-x-2"
+              custom={4}
+              variants={childVariants}
+            >
+              <div
+                className="w-2 h-2 rounded-full"
+                style={{ backgroundColor: colorScheme.main }}
+              ></div>
+              <span className="text-xs uppercase tracking-widest text-gray-400 font-light">
+                {`${index + 1} / 3`}
+              </span>
             </motion.div>
           </motion.div>
         </div>
       </div>
 
-      {/* Loading indicator for model */}
+      {/* Loading indicator */}
       {!isModelLoaded && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/80 z-5">
           <div className="flex flex-col items-center">
             <div
-              className={`w-12 h-12 rounded-full border-2 border-t-${gradientColors.from}-500 border-r-${gradientColors.from}-500 border-b-transparent border-l-transparent animate-spin mb-4`}
+              className="w-12 h-12 rounded-full border-2 border-b-transparent border-l-transparent animate-spin mb-4"
+              style={{
+                borderTopColor: colorScheme.main,
+                borderRightColor: colorScheme.main,
+              }}
             ></div>
             <p className="text-gray-400">Loading 3D model...</p>
           </div>
@@ -366,17 +330,4 @@ export default function Section({
       )}
     </section>
   );
-}
-
-// Helper function to generate colors based on section index (for backwards compatibility)
-function getColorFromIndex(index: number): string {
-  const colors = [
-    "#4f9cff", // blue
-    "#4fffaf", // teal
-    "#ff4f9c", // pink
-    "#ffaf4f", // orange
-    "#af4fff", // purple
-  ];
-
-  return colors[index % colors.length];
 }
