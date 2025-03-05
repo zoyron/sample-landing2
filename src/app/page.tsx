@@ -17,60 +17,78 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-// Enhanced data for the sections with new animation properties
 const SECTIONS: SectionData[] = [
   {
     id: "section-1",
-    title: "Laurem ipsum",
+    title: "Lorem Ipsum Dolor Sit",
     description:
-      "Launch tokenized AI agents in three clicks. Fuses natural evolution and state-of-the-art systems for AI that feels alive.",
+      "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore.",
     modelPath: "/models/model1.glb",
     fullWidthModel: false,
-    scale: 2.0,
-    rotationSpeed: { x: 0, y: 0.02, z: 0 },
+    scale: 2.5,
+    rotationSpeed: { x: 0, y: 2, z: 0 },
     initialRotation: { x: 0, y: 0, z: 0 },
     particleSize: 0.07,
     particleDensity: 0.5,
     useShaderAnimation: true,
-    animationIntensity: 0.025,
-    animationSpeed: 0.4,
+    animationIntensity: 0.25,
+    animationSpeed: 0.05,
     glowIntensity: 1.3,
+    particleColor: "#6e56cf", // Lavender purple
   },
   {
     id: "section-2",
-    title: "SEAMLESS INTEGRATION",
+    title: "Consectetur Adipiscing Elit",
     description:
-      "Effortlessly connect our platform with your existing tools and workflows. Our API-first approach ensures compatibility with your tech stack, minimizing disruption while maximizing value.",
+      "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora.",
     modelPath: "/models/model2.glb",
     fullWidthModel: false,
     scale: 0.00125,
-    rotationSpeed: { x: 0, y: 1.0, z: 0 },
+    rotationSpeed: { x: 0, y: 0, z: 0 },
     initialRotation: { x: 0, y: 0, z: 2.0 },
-    particleColor: "#880088",
+    particleColor: "#23a094", // Teal
     particleSize: 0.05,
-    particleDensity: 0.75,
+    particleDensity: 1.75,
     useShaderAnimation: true,
-    animationIntensity: 0.25,
-    animationSpeed: 0.5,
+    animationIntensity: 0.125,
+    animationSpeed: 0.15,
     glowIntensity: 1.0,
   },
   {
     id: "section-3",
-    title: "FUTURE-PROOF SOLUTIONS",
+    title: "Sed Do Eiusmod Tempor",
     description:
-      "Stay ahead of the curve with technology that evolves with your needs. Our continuous updates and scalable architecture ensure your business is always equipped with the latest innovations.",
+      "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?",
     modelPath: "/models/brain/model3.gltf",
     fullWidthModel: false,
     scale: 1.25,
     rotationSpeed: { x: 0, y: 0.0008, z: 0 },
     initialRotation: { x: 0, y: 2, z: 0 },
     particleSize: 0.075,
-    particleColor: "#008380",
+    particleColor: "#dc3a84", // Rose pink
     particleDensity: 2.25,
     useShaderAnimation: true,
     animationIntensity: 0,
     animationSpeed: 0.0,
     glowIntensity: 2.5,
+  },
+  {
+    id: "section-4",
+    title: "Amet Consectetur Ipsum",
+    description:
+      "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.",
+    modelPath: "/models/model3.glb",
+    fullWidthModel: false,
+    scale: 0.0225,
+    rotationSpeed: { x: 0, y: 2, z: 0 },
+    initialRotation: { x: 0, y: 0, z: 0 },
+    particleSize: 0.07,
+    particleDensity: 0.5,
+    useShaderAnimation: true,
+    animationIntensity: 0.05,
+    animationSpeed: 0.2,
+    glowIntensity: 1.3,
+    particleColor: "#008080",
   },
 ];
 
@@ -148,15 +166,15 @@ export default function Home() {
     const currentPosition = currentSection.fullWidthModel
       ? 0 // Centered for full width
       : activeSection % 2 === 0
-      ? 25
-      : -25; // Right for even, left for odd
+      ? 30
+      : -30; // Right for even, left for odd
 
     // For next section: position based on fullWidthModel and index
     const nextPosition = nextSection.fullWidthModel
       ? 0 // Centered for full width
       : nextSectionIndex % 2 === 0
-      ? 25
-      : -25; // Right for even, left for odd
+      ? 30
+      : -30; // Right for even, left for odd
 
     // Interpolate between positions based on scroll progress
     const translateX =
@@ -165,8 +183,8 @@ export default function Home() {
     // Calculate scale based on section properties, with smaller scale for mobile
     const mobileFactor = isMobile ? 0.7 : 1.0; // Reduce size by 30% on mobile
     const currentScale =
-      (currentSection.fullWidthModel ? 1.1 : 0.85) * mobileFactor;
-    const nextScale = (nextSection.fullWidthModel ? 1.1 : 0.85) * mobileFactor;
+      (currentSection.fullWidthModel ? 1.1 : 0.9) * mobileFactor;
+    const nextScale = (nextSection.fullWidthModel ? 1.1 : 0.9) * mobileFactor;
     const scale = currentScale + (nextScale - currentScale) * sectionProgress;
 
     return {
@@ -179,9 +197,27 @@ export default function Home() {
   // Get container style
   const particleContainerStyle = getParticlePosition();
 
+  // Navigation dots component
+  const NavigationDots = () => (
+    <div className="fixed right-8 top-1/2 transform -translate-y-1/2 z-50 hidden md:flex flex-col gap-4">
+      {SECTIONS.map((section, idx) => (
+        <a
+          key={idx}
+          href={`#${section.id}`}
+          className={`w-3 h-3 rounded-full transition-all duration-300 ease-in-out ${
+            activeSection === idx
+              ? "bg-white scale-125"
+              : "bg-white/30 hover:bg-white/70"
+          }`}
+          aria-label={`Navigate to ${section.title}`}
+        />
+      ))}
+    </div>
+  );
+
   return (
     <main
-      className={`relative bg-gradient-to-b from-[#030014] to-[#010108] text-white ${montserrat.variable} ${inter.variable} font-sans`}
+      className={`relative bg-gradient-to-b from-[#090419] to-[#05010d] text-white ${montserrat.variable} ${inter.variable} font-sans`}
     >
       {/* Fixed background particle system that morphs based on scroll */}
       <div
@@ -192,6 +228,9 @@ export default function Home() {
         <ParticleModelViewer sections={SECTIONS} className="w-full h-full" />
       </div>
 
+      {/* Navigation dots */}
+      <NavigationDots />
+
       {/* Content sections with lighter overlays and higher z-indices */}
       {SECTIONS.map((section, index) => (
         <section
@@ -201,7 +240,7 @@ export default function Home() {
         >
           {/* Semi-transparent section background with enhanced lighting effect */}
           <div className="absolute inset-0 w-full h-full z-5">
-            <div className="absolute inset-0 bg-black/25 backdrop-blur-[2px]"></div>
+            <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px]"></div>
             {/* Add subtle radial gradient for depth */}
             <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-black/40 opacity-80"></div>
           </div>
@@ -211,11 +250,11 @@ export default function Home() {
             <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center">
               {/* Text content positioned based on section config */}
               <motion.div
-                className={`w-full md:w-1/2 space-y-8 p-8 rounded-2xl
+                className={`w-full max-w-xl space-y-8 p-8 rounded-3xl
                   ${
                     isMobile
-                      ? "bg-gradient-to-br from-black/30 to-black/5 backdrop-blur-sm border border-white/5"
-                      : "bg-gradient-to-br from-black/40 to-black/10 backdrop-blur-md border border-white/5 shadow-xl"
+                      ? "bg-gradient-to-br from-black/20 to-black/5 backdrop-blur-sm border border-white/10"
+                      : "bg-gradient-to-br from-black/30 via-black/20 to-transparent backdrop-blur-md border border-white/10 shadow-xl"
                   }
                   ${
                     section.fullWidthModel
@@ -229,24 +268,52 @@ export default function Home() {
                 viewport={{ once: false, amount: 0.3 }}
                 transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
               >
-                <div className="inline-block mb-2 px-3 py-1 bg-white/5 backdrop-blur-sm rounded-full border border-white/10">
-                  <p className="text-xs tracking-widest text-cyan-300 font-medium uppercase">
-                    {`Section ${index + 1}`}
-                  </p>
+                {/* Subtle section indicator */}
+                <div className="mb-2 opacity-60">
+                  <div className="h-px w-16 bg-gradient-to-r from-transparent via-white to-transparent"></div>
                 </div>
-                <h2 className="text-4xl md:text-5xl font-bold font-montserrat tracking-tight bg-gradient-to-r from-violet-300 via-sky-300 to-emerald-300 text-transparent bg-clip-text">
+
+                {/* Title with custom gradient based on section */}
+                <h2
+                  className="text-4xl md:text-5xl font-bold font-montserrat tracking-tight"
+                  style={{
+                    background:
+                      index === 0
+                        ? "linear-gradient(to right, #a78bfa, #6e56cf)"
+                        : index === 1
+                        ? "linear-gradient(to right, #5eead4, #23a094)"
+                        : "linear-gradient(to right, #fb7185, #dc3a84)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                  }}
+                >
                   {section.title}
                 </h2>
-                <p className="text-lg text-gray-200 leading-relaxed font-inter">
+
+                {/* Description with slightly increased spacing */}
+                <p className="text-lg leading-relaxed font-inter text-gray-300 tracking-wide">
                   {section.description}
                 </p>
-                <div className="flex flex-wrap gap-4 pt-2">
-                  <button className="bg-gradient-to-r from-sky-500 to-emerald-500 text-white px-6 py-3.5 rounded-xl font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-sky-500/20">
-                    Learn More
-                  </button>
-                  <button className="bg-transparent text-white border border-white/20 hover:border-white/40 px-6 py-3.5 rounded-xl font-semibold transition-all duration-300 hover:bg-white/5">
-                    View Demo
-                  </button>
+
+                {/* Subtle separator line */}
+                <div className="h-px w-full bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+
+                {/* Section indicator in minimal form */}
+                <div className="flex items-center space-x-2">
+                  <div
+                    className="w-2 h-2 rounded-full"
+                    style={{
+                      backgroundColor:
+                        index === 0
+                          ? "#6e56cf"
+                          : index === 1
+                          ? "#23a094"
+                          : "#dc3a84",
+                    }}
+                  ></div>
+                  <span className="text-xs uppercase tracking-widest text-gray-400 font-light">
+                    {`${index + 1} / ${SECTIONS.length}`}
+                  </span>
                 </div>
               </motion.div>
             </div>
