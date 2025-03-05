@@ -102,6 +102,13 @@ export default function Home() {
   const [sectionProgress, setSectionProgress] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
+  // Add loading state
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Track loading progress
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [modelsLoaded, setModelsLoaded] = useState(0);
+
   useEffect(() => {
     // Add smooth scrolling and initialization
     document.documentElement.style.scrollBehavior = "smooth";
@@ -139,12 +146,49 @@ export default function Home() {
     // Set initial values
     handleScroll();
 
+    // Simulate model loading with a timeout for demo purposes
+    // In a real scenario, you would track actual 3D model loading
+    const loadingTimer = setTimeout(() => {
+      setIsLoading(false);
+      // Enable scrolling after loading
+      document.body.style.overflow = "auto";
+    }, 3500);
+
+    // Update loading progress periodically
+    const progressInterval = setInterval(() => {
+      setLoadingProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(progressInterval);
+          return 100;
+        }
+        return prev + 5;
+      });
+    }, 150);
+
+    // Disable scrolling during loading
+    document.body.style.overflow = "hidden";
+
     return () => {
       document.documentElement.style.scrollBehavior = "";
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", checkIfMobile);
+      clearTimeout(loadingTimer);
+      clearInterval(progressInterval);
     };
   }, []);
+
+  // Handle model load events
+  const handleModelLoaded = () => {
+    setModelsLoaded((prev) => {
+      const newCount = prev + 1;
+      // If all models are loaded, we can finish loading
+      if (newCount >= SECTIONS.length) {
+        setIsLoading(false);
+        document.body.style.overflow = "auto";
+      }
+      return newCount;
+    });
+  };
 
   // Calculate particle system position based on active section
   const getParticlePosition = () => {
@@ -215,17 +259,88 @@ export default function Home() {
     </div>
   );
 
+  // Get color scheme for loader based on active section
+  const getColorScheme = (index: number) => {
+    const schemes = [
+      {
+        main: "#6e56cf", // Lavender purple
+        accent: "#a78bfa",
+      },
+      {
+        main: "#23a094", // Teal
+        accent: "#5eead4",
+      },
+      {
+        main: "#dc3a84", // Rose pink
+        accent: "#fb7185",
+      },
+    ];
+
+    return schemes[index % schemes.length];
+  };
+
+  const currentColorScheme = getColorScheme(activeSection);
+
   return (
     <main
       className={`relative bg-gradient-to-b from-[#090419] to-[#05010d] text-white ${montserrat.variable} ${inter.variable} font-sans`}
     >
+      {/* Fullscreen Loader */}
+      {isLoading && (
+        <div className="fixed inset-0 z-50 bg-[#05010d] flex flex-col items-center justify-center">
+          <div className="w-full max-w-xs flex flex-col items-center">
+            {/* Pulsating logo or brand icon */}
+            <motion.div
+              initial={{ opacity: 0.6, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                repeatType: "reverse",
+              }}
+              className="mb-8"
+            >
+              <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-[#6e56cf] to-[#a78bfa] flex items-center justify-center">
+                <div className="w-20 h-20 rounded-full bg-[#05010d] flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-[#6e56cf] to-[#a78bfa] opacity-70"></div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Loading text */}
+            <h2 className="text-2xl font-montserrat font-medium mb-6 text-white/90">
+              Loading Experience
+            </h2>
+
+            {/* Progress bar */}
+            <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden mb-3">
+              <motion.div
+                className="h-full bg-gradient-to-r from-[#6e56cf] to-[#a78bfa]"
+                initial={{ width: "0%" }}
+                animate={{ width: `${loadingProgress}%` }}
+                transition={{ duration: 0.3 }}
+              />
+            </div>
+
+            {/* Loading status */}
+            <p className="text-white/60 text-sm">
+              Loading 3D models... ({Math.min(loadingProgress, 100)}%)
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Fixed background particle system that morphs based on scroll */}
       <div
         className="fixed inset-0 w-full h-full z-10 pointer-events-none transition-transform duration-500 ease-out"
         style={particleContainerStyle}
         ref={particleContainerRef}
       >
-        <ParticleModelViewer sections={SECTIONS} className="w-full h-full" />
+        <ParticleModelViewer
+          sections={SECTIONS}
+          className="w-full h-full"
+          onModelLoaded={handleModelLoaded}
+        />
       </div>
 
       {/* Navigation dots */}
