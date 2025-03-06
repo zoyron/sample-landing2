@@ -29,12 +29,13 @@ const SECTIONS: SectionData[] = [
     rotationSpeed: { x: 0, y: 2, z: 0 },
     initialRotation: { x: 0, y: 0, z: 0 },
     particleSize: 0.07,
-    particleDensity: 1.25,
+    particleDensity: 1.05,
     useShaderAnimation: true,
     animationIntensity: 0,
     animationSpeed: 0,
     glowIntensity: 0,
-    particleColor: "#6e56cf", // Lavender purple
+    // particleColor: "#6e56cf", // Lavender purple
+    particleColor: "#004a80",
     showTextSection: true, // Show text section for this section
   },
   {
@@ -67,7 +68,8 @@ const SECTIONS: SectionData[] = [
     rotationSpeed: { x: 0, y: 0.0008, z: 0 },
     initialRotation: { x: 0, y: 2, z: 0 },
     particleSize: 0.075,
-    particleColor: "#dc3a84", // Rose pink
+    // particleColor: "#dc3a84", // Rose pink
+    particleColor: "#6e56cf", // Lavender purple
     particleDensity: 2.75,
     useShaderAnimation: true,
     animationIntensity: 0,
