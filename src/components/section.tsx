@@ -43,6 +43,8 @@ interface SectionProps {
   animationIntensity?: number;
   animationSpeed?: number;
   glowIntensity?: number;
+  // Optional text section display flag
+  showTextSection?: boolean;
 }
 
 export default function Section({
@@ -64,6 +66,8 @@ export default function Section({
   animationIntensity = 0.02,
   animationSpeed = 0.5,
   glowIntensity = 1.2,
+  // Show text section by default
+  showTextSection = true,
 }: SectionProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: false, amount: 0.3 });
@@ -238,80 +242,82 @@ export default function Section({
         </div>
       </div>
 
-      {/* Content with more minimal, elegant design */}
-      <div className="relative w-full z-10 px-6 py-16 md:py-0">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center">
-          <motion.div
-            className={cn(
-              "w-full max-w-xl space-y-8 p-8 rounded-3xl",
-              isMobile
-                ? "bg-gradient-to-br from-black/20 to-black/5 backdrop-blur-sm border border-white/10"
-                : "bg-gradient-to-br from-black/30 via-black/20 to-transparent backdrop-blur-md border border-white/10",
-              fullWidthModel && "md:mx-auto",
-              !fullWidthModel && !isMobile && reverse
-                ? "md:ml-auto"
-                : "md:mr-auto"
-            )}
-            initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
-            variants={textVariants}
-          >
-            {/* Minimalist section indicator */}
+      {/* Content with more minimal, elegant design - only rendered if showTextSection is true */}
+      {showTextSection && (
+        <div className="relative w-full z-10 px-6 py-16 md:py-0">
+          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center">
             <motion.div
-              className="mb-2 opacity-60"
-              custom={0}
-              variants={childVariants}
+              className={cn(
+                "w-full max-w-xl space-y-8 p-8 rounded-3xl",
+                isMobile
+                  ? "bg-gradient-to-br from-black/20 to-black/5 backdrop-blur-sm border border-white/10"
+                  : "bg-gradient-to-br from-black/30 via-black/20 to-transparent backdrop-blur-md border border-white/10",
+                fullWidthModel && "md:mx-auto",
+                !fullWidthModel && !isMobile && reverse
+                  ? "md:ml-auto"
+                  : "md:mr-auto"
+              )}
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
+              variants={textVariants}
             >
-              <div className="h-px w-16 bg-gradient-to-r from-transparent via-white to-transparent"></div>
+              {/* Minimalist section indicator */}
+              <motion.div
+                className="mb-2 opacity-60"
+                custom={0}
+                variants={childVariants}
+              >
+                <div className="h-px w-16 bg-gradient-to-r from-transparent via-white to-transparent"></div>
+              </motion.div>
+
+              {/* Title with custom gradient */}
+              <motion.h2
+                className="text-4xl md:text-5xl font-bold font-montserrat tracking-tight"
+                custom={1}
+                variants={childVariants}
+                style={{
+                  background: `linear-gradient(to right, ${colorScheme.accent}, ${colorScheme.main})`,
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
+                {title}
+              </motion.h2>
+
+              {/* Description */}
+              <motion.p
+                className="text-lg text-gray-300 leading-relaxed font-inter tracking-wide"
+                custom={2}
+                variants={childVariants}
+              >
+                {description}
+              </motion.p>
+
+              {/* Subtle separator line */}
+              <motion.div
+                className="h-px w-full bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                custom={3}
+                variants={childVariants}
+              ></motion.div>
+
+              {/* Section indicator in minimal form */}
+              <motion.div
+                className="flex items-center space-x-2"
+                custom={4}
+                variants={childVariants}
+              >
+                <div
+                  className="w-2 h-2 rounded-full"
+                  style={{ backgroundColor: colorScheme.main }}
+                ></div>
+                <span className="text-xs uppercase tracking-widest text-gray-400 font-light">
+                  {`${index + 1} / 3`}
+                </span>
+              </motion.div>
             </motion.div>
-
-            {/* Title with custom gradient */}
-            <motion.h2
-              className="text-4xl md:text-5xl font-bold font-montserrat tracking-tight"
-              custom={1}
-              variants={childVariants}
-              style={{
-                background: `linear-gradient(to right, ${colorScheme.accent}, ${colorScheme.main})`,
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
-            >
-              {title}
-            </motion.h2>
-
-            {/* Description */}
-            <motion.p
-              className="text-lg text-gray-300 leading-relaxed font-inter tracking-wide"
-              custom={2}
-              variants={childVariants}
-            >
-              {description}
-            </motion.p>
-
-            {/* Subtle separator line */}
-            <motion.div
-              className="h-px w-full bg-gradient-to-r from-transparent via-white/20 to-transparent"
-              custom={3}
-              variants={childVariants}
-            ></motion.div>
-
-            {/* Section indicator in minimal form */}
-            <motion.div
-              className="flex items-center space-x-2"
-              custom={4}
-              variants={childVariants}
-            >
-              <div
-                className="w-2 h-2 rounded-full"
-                style={{ backgroundColor: colorScheme.main }}
-              ></div>
-              <span className="text-xs uppercase tracking-widest text-gray-400 font-light">
-                {`${index + 1} / 3`}
-              </span>
-            </motion.div>
-          </motion.div>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Loading indicator */}
       {!isModelLoaded && (

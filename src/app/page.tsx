@@ -24,17 +24,18 @@ const SECTIONS: SectionData[] = [
     description:
       "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore.",
     modelPath: "/models/model1.glb",
-    fullWidthModel: false,
-    scale: 2.5,
+    fullWidthModel: true,
+    scale: 2.0,
     rotationSpeed: { x: 0, y: 2, z: 0 },
     initialRotation: { x: 0, y: 0, z: 0 },
     particleSize: 0.07,
     particleDensity: 0.5,
     useShaderAnimation: true,
-    animationIntensity: 0.25,
+    animationIntensity: 0.05,
     animationSpeed: 0.05,
     glowIntensity: 1.3,
     particleColor: "#6e56cf", // Lavender purple
+    showTextSection: false, // Show text section for this section
   },
   {
     id: "section-2",
@@ -53,6 +54,7 @@ const SECTIONS: SectionData[] = [
     animationIntensity: 0.125,
     animationSpeed: 0.15,
     glowIntensity: 1.0,
+    showTextSection: true, // Show text section for this section
   },
   {
     id: "section-3",
@@ -71,6 +73,7 @@ const SECTIONS: SectionData[] = [
     animationIntensity: 0,
     animationSpeed: 0.0,
     glowIntensity: 2.5,
+    showTextSection: true, // Hide text section for this section
   },
   {
     id: "section-4",
@@ -89,6 +92,7 @@ const SECTIONS: SectionData[] = [
     animationSpeed: 0.2,
     glowIntensity: 1.3,
     particleColor: "#008080",
+    showTextSection: true, // Show text section for this section
   },
 ];
 
@@ -361,78 +365,80 @@ export default function Home() {
           </div>
 
           {/* Content positioned over the morphing background with higher z-index */}
-          <div className="relative w-full z-20 px-6 py-16 md:py-0">
-            <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center">
-              {/* Text content positioned based on section config */}
-              <motion.div
-                className={`w-full max-w-xl space-y-8 p-8 rounded-3xl
-                  ${
-                    isMobile
-                      ? "bg-gradient-to-br from-black/20 to-black/5 backdrop-blur-sm border border-white/10"
-                      : "bg-gradient-to-br from-black/30 via-black/20 to-transparent backdrop-blur-md border border-white/10 shadow-xl"
-                  }
-                  ${
-                    section.fullWidthModel
-                      ? "md:mx-auto"
-                      : index % 2 !== 0
-                      ? "md:ml-auto"
-                      : "md:mr-auto"
-                  }`}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false, amount: 0.3 }}
-                transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
-              >
-                {/* Subtle section indicator */}
-                <div className="mb-2 opacity-60">
-                  <div className="h-px w-16 bg-gradient-to-r from-transparent via-white to-transparent"></div>
-                </div>
-
-                {/* Title with custom gradient based on section */}
-                <h2
-                  className="text-4xl md:text-5xl font-bold font-montserrat tracking-tight"
-                  style={{
-                    background:
-                      index === 0
-                        ? "linear-gradient(to right, #a78bfa, #6e56cf)"
-                        : index === 1
-                        ? "linear-gradient(to right, #5eead4, #23a094)"
-                        : "linear-gradient(to right, #fb7185, #dc3a84)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                  }}
+          {section.showTextSection && (
+            <div className="relative w-full z-20 px-6 py-16 md:py-0">
+              <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center">
+                {/* Text content positioned based on section config */}
+                <motion.div
+                  className={`w-full max-w-xl space-y-8 p-8 rounded-3xl
+                    ${
+                      isMobile
+                        ? "bg-gradient-to-br from-black/20 to-black/5 backdrop-blur-sm border border-white/10"
+                        : "bg-gradient-to-br from-black/30 via-black/20 to-transparent backdrop-blur-md border border-white/10 shadow-xl"
+                    }
+                    ${
+                      section.fullWidthModel
+                        ? "md:mx-auto"
+                        : index % 2 !== 0
+                        ? "md:ml-auto"
+                        : "md:mr-auto"
+                    }`}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: false, amount: 0.3 }}
+                  transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
                 >
-                  {section.title}
-                </h2>
+                  {/* Subtle section indicator */}
+                  <div className="mb-2 opacity-60">
+                    <div className="h-px w-16 bg-gradient-to-r from-transparent via-white to-transparent"></div>
+                  </div>
 
-                {/* Description with slightly increased spacing */}
-                <p className="text-lg leading-relaxed font-inter text-gray-300 tracking-wide">
-                  {section.description}
-                </p>
-
-                {/* Subtle separator line */}
-                <div className="h-px w-full bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-
-                {/* Section indicator in minimal form */}
-                <div className="flex items-center space-x-2">
-                  <div
-                    className="w-2 h-2 rounded-full"
+                  {/* Title with custom gradient based on section */}
+                  <h2
+                    className="text-4xl md:text-5xl font-bold font-montserrat tracking-tight"
                     style={{
-                      backgroundColor:
+                      background:
                         index === 0
-                          ? "#6e56cf"
+                          ? "linear-gradient(to right, #a78bfa, #6e56cf)"
                           : index === 1
-                          ? "#23a094"
-                          : "#dc3a84",
+                          ? "linear-gradient(to right, #5eead4, #23a094)"
+                          : "linear-gradient(to right, #fb7185, #dc3a84)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
                     }}
-                  ></div>
-                  <span className="text-xs uppercase tracking-widest text-gray-400 font-light">
-                    {`${index + 1} / ${SECTIONS.length}`}
-                  </span>
-                </div>
-              </motion.div>
+                  >
+                    {section.title}
+                  </h2>
+
+                  {/* Description with slightly increased spacing */}
+                  <p className="text-lg leading-relaxed font-inter text-gray-300 tracking-wide">
+                    {section.description}
+                  </p>
+
+                  {/* Subtle separator line */}
+                  <div className="h-px w-full bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+
+                  {/* Section indicator in minimal form */}
+                  <div className="flex items-center space-x-2">
+                    <div
+                      className="w-2 h-2 rounded-full"
+                      style={{
+                        backgroundColor:
+                          index === 0
+                            ? "#6e56cf"
+                            : index === 1
+                            ? "#23a094"
+                            : "#dc3a84",
+                      }}
+                    ></div>
+                    <span className="text-xs uppercase tracking-widest text-gray-400 font-light">
+                      {`${index + 1} / ${SECTIONS.length}`}
+                    </span>
+                  </div>
+                </motion.div>
+              </div>
             </div>
-          </div>
+          )}
         </section>
       ))}
     </main>
