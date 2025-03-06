@@ -24,18 +24,18 @@ const SECTIONS: SectionData[] = [
     description:
       "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore.",
     modelPath: "/models/model1.glb",
-    fullWidthModel: true,
+    fullWidthModel: false,
     scale: 2.0,
     rotationSpeed: { x: 0, y: 2, z: 0 },
     initialRotation: { x: 0, y: 0, z: 0 },
     particleSize: 0.07,
-    particleDensity: 0.5,
+    particleDensity: 1.25,
     useShaderAnimation: true,
-    animationIntensity: 0.05,
-    animationSpeed: 0.05,
-    glowIntensity: 1.3,
+    animationIntensity: 0,
+    animationSpeed: 0,
+    glowIntensity: 0,
     particleColor: "#6e56cf", // Lavender purple
-    showTextSection: false, // Show text section for this section
+    showTextSection: true, // Show text section for this section
   },
   {
     id: "section-2",
@@ -49,10 +49,10 @@ const SECTIONS: SectionData[] = [
     initialRotation: { x: 0, y: 0, z: 2.0 },
     particleColor: "#23a094", // Teal
     particleSize: 0.05,
-    particleDensity: 1.75,
+    particleDensity: 2.5,
     useShaderAnimation: true,
-    animationIntensity: 0.125,
-    animationSpeed: 0.15,
+    animationIntensity: 0,
+    animationSpeed: 0,
     glowIntensity: 1.0,
     showTextSection: true, // Show text section for this section
   },
@@ -68,7 +68,7 @@ const SECTIONS: SectionData[] = [
     initialRotation: { x: 0, y: 2, z: 0 },
     particleSize: 0.075,
     particleColor: "#dc3a84", // Rose pink
-    particleDensity: 2.25,
+    particleDensity: 2.75,
     useShaderAnimation: true,
     animationIntensity: 0,
     animationSpeed: 0.0,
