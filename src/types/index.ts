@@ -25,4 +25,6 @@ export interface SectionData {
   animationIntensity?: number;
   animationSpeed?: number;
   glowIntensity?: number;
+  // Optional text section display flag
+  showTextSection?: boolean;
 }
