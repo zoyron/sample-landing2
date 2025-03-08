@@ -24,8 +24,8 @@ const SECTIONS: SectionData[] = [
     description:
       "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore.",
     modelPath: "/models/model1.glb",
-    fullWidthModel: false,
-    scale: 2.0,
+    fullWidthModel: true,
+    scale: 5.0,
     rotationSpeed: { x: 0, y: 2, z: 0 },
     initialRotation: { x: 0, y: 0, z: 0 },
     particleSize: 0.07,
@@ -352,16 +352,16 @@ export default function Home() {
       {/* Navigation dots */}
       <NavigationDots />
 
-      {/* Content sections with lighter overlays and higher z-indices */}
+      {/* Content sections with solid backgrounds instead of glass/blur */}
       {SECTIONS.map((section, index) => (
         <section
           key={section.id}
           id={section.id}
           className="min-h-screen w-full relative flex items-center overflow-hidden bg-transparent"
         >
-          {/* Semi-transparent section background with enhanced lighting effect */}
+          {/* Solid section background */}
           <div className="absolute inset-0 w-full h-full z-5">
-            <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px]"></div>
+            <div className="absolute inset-0 bg-black/40"></div>
             {/* Add subtle radial gradient for depth */}
             <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-black/40 opacity-80"></div>
           </div>
@@ -370,13 +370,13 @@ export default function Home() {
           {section.showTextSection && (
             <div className="relative w-full z-20 px-6 py-16 md:py-0">
               <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center">
-                {/* Text content positioned based on section config */}
+                {/* Text content with solid background instead of glass effect */}
                 <motion.div
                   className={`w-full max-w-xl space-y-8 p-8 rounded-3xl
                     ${
                       isMobile
-                        ? "bg-gradient-to-br from-black/20 to-black/5 backdrop-blur-sm border border-white/10"
-                        : "bg-gradient-to-br from-black/30 via-black/20 to-transparent backdrop-blur-md border border-white/10 shadow-xl"
+                        ? "bg-black/50 border border-white/10"
+                        : "bg-black/60 border border-white/10 shadow-xl"
                     }
                     ${
                       section.fullWidthModel
