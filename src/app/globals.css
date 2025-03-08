@@ -10,7 +10,6 @@
   --color-teal-light: #5eead4;
   --color-rose: #dc3a84;
   --color-rose-light: #fb7185;
-
   /* Background colors */
   --bg-dark: #090419;
   --bg-darker: #05010d;
@@ -55,14 +54,13 @@ body {
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.15);
 }
 
-/* Glowing border effect */
-.border-glow {
-  box-shadow: 0 0 15px rgba(110, 86, 207, 0.3);
-  transition: box-shadow 0.3s ease;
+/* Border effect without glow */
+.border-effect {
+  transition: border-color 0.3s ease;
 }
 
-.border-glow:hover {
-  box-shadow: 0 0 25px rgba(110, 86, 207, 0.5);
+.border-effect:hover {
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 /* Custom gradient backgrounds */
@@ -140,17 +138,15 @@ body {
     font-size: 2rem;
     line-height: 1.2;
   }
-
   p {
     font-size: 1rem;
     line-height: 1.6;
   }
 }
 
-/* Custom glass effect */
-.glass-panel {
-  background: rgba(9, 4, 25, 0.3);
-  backdrop-filter: blur(12px);
+/* Solid panel instead of glass effect */
+.solid-panel {
+  background: rgba(9, 4, 25, 0.7);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
 }
