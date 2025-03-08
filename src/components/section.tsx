@@ -242,7 +242,7 @@ export default function Section({
         </div>
       </div>
 
-      {/* Content with more minimal, elegant design - only rendered if showTextSection is true */}
+      {/* Content with solid background instead of glass/blur effect - only rendered if showTextSection is true */}
       {showTextSection && (
         <div className="relative w-full z-10 px-6 py-16 md:py-0">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center">
@@ -250,8 +250,8 @@ export default function Section({
               className={cn(
                 "w-full max-w-xl space-y-8 p-8 rounded-3xl",
                 isMobile
-                  ? "bg-gradient-to-br from-black/20 to-black/5 backdrop-blur-sm border border-white/10"
-                  : "bg-gradient-to-br from-black/30 via-black/20 to-transparent backdrop-blur-md border border-white/10",
+                  ? "bg-black/50 border border-white/10"
+                  : "bg-black/60 border border-white/10",
                 fullWidthModel && "md:mx-auto",
                 !fullWidthModel && !isMobile && reverse
                   ? "md:ml-auto"
