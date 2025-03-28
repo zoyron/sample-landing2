@@ -17,14 +17,34 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
+// Original sections - don't change anything about them
 const SECTIONS: SectionData[] = [
+  {
+    id: "hero", // Add hero as first section
+    title: "Interactive 3D Particle Experience",
+    description:
+      "Discover a new dimension of digital interaction with our cutting-edge 3D particle technology. Immerse yourself in a world where data comes alive.",
+    modelPath: "/models/model0.glb",
+    fullWidthModel: false,
+    scale: 0.1,
+    rotationSpeed: { x: 0, y: 1, z: 0 },
+    initialRotation: { x: 0, y: 0, z: 0 },
+    particleSize: 0.07,
+    particleDensity: 2.05,
+    useShaderAnimation: true,
+    animationIntensity: 0.5,
+    animationSpeed: 0.5,
+    glowIntensity: 1.5,
+    particleColor: "#6e56cf",
+    showTextSection: true,
+  },
   {
     id: "section-1",
     title: "Lorem Ipsum Dolor Sit",
     description:
       "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore.",
     modelPath: "/models/model1.glb",
-    fullWidthModel: true,
+    fullWidthModel: false,
     scale: 3.0,
     rotationSpeed: { x: 0, y: 2, z: 0 },
     initialRotation: { x: 0, y: 0, z: 0 },
@@ -34,9 +54,8 @@ const SECTIONS: SectionData[] = [
     animationIntensity: 0,
     animationSpeed: 0,
     glowIntensity: 0,
-    // particleColor: "#6e56cf", // Lavender purple
     particleColor: "#004a80",
-    showTextSection: true, // Show text section for this section
+    showTextSection: true,
   },
   {
     id: "section-2",
@@ -55,7 +74,7 @@ const SECTIONS: SectionData[] = [
     animationIntensity: 0,
     animationSpeed: 0,
     glowIntensity: 1.0,
-    showTextSection: true, // Show text section for this section
+    showTextSection: true,
   },
   {
     id: "section-3",
@@ -75,7 +94,7 @@ const SECTIONS: SectionData[] = [
     animationIntensity: 0,
     animationSpeed: 0.0,
     glowIntensity: 2.5,
-    showTextSection: true, // Hide text section for this section
+    showTextSection: true,
   },
   {
     id: "section-4",
@@ -94,9 +113,68 @@ const SECTIONS: SectionData[] = [
     animationSpeed: 0.2,
     glowIntensity: 1.3,
     particleColor: "#008080",
-    showTextSection: true, // Show text section for this section
+    showTextSection: true,
   },
 ];
+
+// Simple navbar component
+const Navbar = ({ isScrolled }: { isScrolled: boolean }) => (
+  <header
+    className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+      isScrolled ? "bg-black/80 backdrop-blur-lg" : "bg-transparent"
+    }`}
+  >
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+      {/* Logo */}
+      <div className="flex items-center">
+        <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#6e56cf] to-[#a78bfa] flex items-center justify-center">
+          <div className="w-7 h-7 rounded-full bg-[#05010d] flex items-center justify-center">
+            <div className="w-4 h-4 rounded-full bg-gradient-to-tr from-[#6e56cf] to-[#a78bfa] opacity-70"></div>
+          </div>
+        </div>
+        <span className="ml-3 text-xl font-bold text-white">PARTICLE</span>
+      </div>
+
+      {/* Navigation links */}
+      <div className="hidden md:flex space-x-6">
+        {SECTIONS.slice(1).map((section, idx) => (
+          <a
+            key={idx}
+            href={`#${section.id}`}
+            className="text-white/80 hover:text-white transition-colors"
+          >
+            {section.title.split(" ")[0]}
+          </a>
+        ))}
+        <a
+          href="#hero"
+          className="px-4 py-1 bg-gradient-to-r from-[#6e56cf] to-[#a78bfa] rounded-full text-white font-medium"
+        >
+          Get Started
+        </a>
+      </div>
+
+      {/* Mobile menu button */}
+      <div className="md:hidden">
+        <button className="text-white">
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+);
 
 export default function Home() {
   // Reference to the container for the global particle system
@@ -107,6 +185,7 @@ export default function Home() {
   const [nextSectionIndex, setNextSectionIndex] = useState(1);
   const [sectionProgress, setSectionProgress] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   // Add loading state
   const [isLoading, setIsLoading] = useState(true);
@@ -127,6 +206,8 @@ export default function Home() {
 
     // Track scroll position
     const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+
       const scrollHeight =
         document.documentElement.scrollHeight - window.innerHeight;
       const scrollTop = window.scrollY;
@@ -247,24 +328,6 @@ export default function Home() {
   // Get container style
   const particleContainerStyle = getParticlePosition();
 
-  // Navigation dots component
-  const NavigationDots = () => (
-    <div className="fixed right-8 top-1/2 transform -translate-y-1/2 z-50 hidden md:flex flex-col gap-4">
-      {SECTIONS.map((section, idx) => (
-        <a
-          key={idx}
-          href={`#${section.id}`}
-          className={`w-3 h-3 rounded-full transition-all duration-300 ease-in-out ${
-            activeSection === idx
-              ? "bg-white scale-125"
-              : "bg-white/30 hover:bg-white/70"
-          }`}
-          aria-label={`Navigate to ${section.title}`}
-        />
-      ))}
-    </div>
-  );
-
   // Get color scheme for loader based on active section
   const getColorScheme = (index: number) => {
     const schemes = [
@@ -291,6 +354,9 @@ export default function Home() {
     <main
       className={`relative bg-gradient-to-b from-[#090419] to-[#05010d] text-white ${montserrat.variable} ${inter.variable} font-sans`}
     >
+      {/* Navbar */}
+      <Navbar isScrolled={isScrolled} />
+
       {/* Fullscreen Loader */}
       {isLoading && (
         <div className="fixed inset-0 z-50 bg-[#05010d] flex flex-col items-center justify-center">
@@ -349,9 +415,6 @@ export default function Home() {
         />
       </div>
 
-      {/* Navigation dots */}
-      <NavigationDots />
-
       {/* Content sections with solid backgrounds instead of glass/blur */}
       {SECTIONS.map((section, index) => (
         <section
@@ -366,80 +429,168 @@ export default function Home() {
             <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-black/40 opacity-80"></div>
           </div>
 
-          {/* Content positioned over the morphing background with higher z-index */}
-          {section.showTextSection && (
-            <div className="relative w-full z-20 px-6 py-16 md:py-0">
-              <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center">
-                {/* Text content with solid background instead of glass effect */}
+          {/* Hero section treatment */}
+          {index === 0 ? (
+            <div className="relative w-full z-20 px-6 py-16 pt-32 md:pt-40">
+              <div className="max-w-7xl mx-auto">
                 <motion.div
-                  className={`w-full max-w-xl space-y-8 p-8 rounded-3xl
-                    ${
-                      isMobile
-                        ? "bg-black/50 border border-white/10"
-                        : "bg-black/60 border border-white/10 shadow-xl"
-                    }
-                    ${
-                      section.fullWidthModel
-                        ? "md:mx-auto"
-                        : index % 2 !== 0
-                        ? "md:ml-auto"
-                        : "md:mr-auto"
-                    }`}
+                  className="w-full max-w-3xl space-y-8"
                   initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: false, amount: 0.3 }}
+                  animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
                 >
-                  {/* Subtle section indicator */}
-                  <div className="mb-2 opacity-60">
-                    <div className="h-px w-16 bg-gradient-to-r from-transparent via-white to-transparent"></div>
-                  </div>
+                  <motion.div
+                    className="inline-block px-4 py-1 rounded-full bg-white/10 border border-white/20 text-sm font-medium text-white/90 mb-4"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.3 }}
+                  >
+                    ✨ Experience the Future
+                  </motion.div>
 
-                  {/* Title with custom gradient based on section */}
-                  <h2
-                    className="text-4xl md:text-5xl font-bold font-montserrat tracking-tight"
+                  <motion.h1
+                    className="text-5xl md:text-7xl font-bold font-montserrat tracking-tight leading-tight"
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.4 }}
                     style={{
-                      background:
-                        index === 0
-                          ? "linear-gradient(to right, #a78bfa, #6e56cf)"
-                          : index === 1
-                          ? "linear-gradient(to right, #5eead4, #23a094)"
-                          : "linear-gradient(to right, #fb7185, #dc3a84)",
+                      background: "linear-gradient(to right, #ffffff, #a78bfa)",
                       WebkitBackgroundClip: "text",
                       WebkitTextFillColor: "transparent",
                     }}
                   >
                     {section.title}
-                  </h2>
+                  </motion.h1>
 
-                  {/* Description with slightly increased spacing */}
-                  <p className="text-lg leading-relaxed font-inter text-gray-300 tracking-wide">
+                  <motion.p
+                    className="text-xl md:text-2xl leading-relaxed font-inter text-gray-300"
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.5 }}
+                  >
                     {section.description}
-                  </p>
+                  </motion.p>
 
-                  {/* Subtle separator line */}
-                  <div className="h-px w-full bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-
-                  {/* Section indicator in minimal form */}
-                  <div className="flex items-center space-x-2">
-                    <div
-                      className="w-2 h-2 rounded-full"
-                      style={{
-                        backgroundColor:
-                          index === 0
-                            ? "#6e56cf"
-                            : index === 1
-                            ? "#23a094"
-                            : "#dc3a84",
-                      }}
-                    ></div>
-                    <span className="text-xs uppercase tracking-widest text-gray-400 font-light">
-                      {`${index + 1} / ${SECTIONS.length}`}
-                    </span>
-                  </div>
+                  <motion.div
+                    className="flex flex-wrap gap-4 pt-4"
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.6 }}
+                  >
+                    <a
+                      href="#section-1"
+                      className="px-8 py-4 rounded-full bg-gradient-to-r from-[#6e56cf] to-[#a78bfa] text-white font-medium hover:shadow-lg hover:shadow-purple-500/30 transition-all transform hover:-translate-y-1"
+                    >
+                      Get Started
+                    </a>
+                    <a
+                      href="#section-3"
+                      className="px-8 py-4 rounded-full bg-white/10 border border-white/20 text-white font-medium hover:bg-white/20 transition-all"
+                    >
+                      Learn More
+                    </a>
+                  </motion.div>
                 </motion.div>
               </div>
             </div>
+          ) : (
+            /* Regular sections with original behavior */
+            section.showTextSection && (
+              <div className="relative w-full z-20 px-6 py-16 md:py-0">
+                <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center">
+                  {/* Text content with solid background instead of glass effect */}
+                  <motion.div
+                    className={`w-full max-w-xl space-y-8 p-8 rounded-3xl
+                      ${
+                        isMobile
+                          ? "bg-black/50 border border-white/10"
+                          : "bg-black/60 border border-white/10 shadow-xl"
+                      }
+                      ${
+                        section.fullWidthModel
+                          ? "md:mx-auto"
+                          : index % 2 !== 0
+                          ? "md:ml-auto"
+                          : "md:mr-auto"
+                      }`}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: false, amount: 0.3 }}
+                    transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
+                  >
+                    {/* Subtle section indicator */}
+                    <div className="mb-2 opacity-60">
+                      <div className="h-px w-16 bg-gradient-to-r from-transparent via-white to-transparent"></div>
+                    </div>
+
+                    {/* Title with custom gradient based on section */}
+                    <h2
+                      className="text-4xl md:text-5xl font-bold font-montserrat tracking-tight"
+                      style={{
+                        background:
+                          index === 1
+                            ? "linear-gradient(to right, #a78bfa, #6e56cf)"
+                            : index === 2
+                            ? "linear-gradient(to right, #5eead4, #23a094)"
+                            : "linear-gradient(to right, #fb7185, #dc3a84)",
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                      }}
+                    >
+                      {section.title}
+                    </h2>
+
+                    {/* Description with slightly increased spacing */}
+                    <p className="text-lg leading-relaxed font-inter text-gray-300 tracking-wide">
+                      {section.description}
+                    </p>
+
+                    {/* Add simple CTA button */}
+                    <div className="pt-2">
+                      <a
+                        href={`#${
+                          SECTIONS[Math.min(index + 1, SECTIONS.length - 1)].id
+                        }`}
+                        className="inline-block px-6 py-3 rounded-full text-white text-sm font-medium transition-all hover:-translate-y-1"
+                        style={{
+                          background:
+                            index === 1
+                              ? "linear-gradient(to right, #a78bfa, #6e56cf)"
+                              : index === 2
+                              ? "linear-gradient(to right, #5eead4, #23a094)"
+                              : "linear-gradient(to right, #fb7185, #dc3a84)",
+                        }}
+                      >
+                        {index === SECTIONS.length - 1
+                          ? "Get Started"
+                          : "Learn More"}
+                      </a>
+                    </div>
+
+                    {/* Subtle separator line */}
+                    <div className="h-px w-full bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+
+                    {/* Section indicator in minimal form */}
+                    <div className="flex items-center space-x-2">
+                      <div
+                        className="w-2 h-2 rounded-full"
+                        style={{
+                          backgroundColor:
+                            index === 1
+                              ? "#6e56cf"
+                              : index === 2
+                              ? "#23a094"
+                              : "#dc3a84",
+                        }}
+                      ></div>
+                      <span className="text-xs uppercase tracking-widest text-gray-400 font-light">
+                        {`${index} / ${SECTIONS.length - 1}`}
+                      </span>
+                    </div>
+                  </motion.div>
+                </div>
+              </div>
+            )
           )}
         </section>
       ))}
