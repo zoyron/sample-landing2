@@ -1,8 +1,16 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Playfair_Display, Libre_Franklin } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair",
+});
+
+const libre = Libre_Franklin({
+  subsets: ["latin"],
+  variable: "--font-libre",
+});
 
 export const metadata: Metadata = {
   title: "3D Landing Page",
@@ -16,7 +24,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={`${playfair.variable} ${libre.variable} font-sans`}>
+        {children}
+      </body>
     </html>
   );
 }
