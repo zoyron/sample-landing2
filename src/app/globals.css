@@ -3,10 +3,20 @@
 @tailwind utilities;
 
 :root {
-  --color-obsidian: #0a0a0a;
-  --color-amber-gold: #c8956c;
-  --color-cream: #e8dcc8;
-  --color-cream-muted: #a89a8a;
+  /* Refined warm-neutral palette */
+  --color-obsidian: #0c0b0a;
+  --color-obsidian-light: #12100e;
+  --color-amber-gold: #c9a87c;
+  --color-amber-gold-light: #d4b896;
+  --color-cream: #f5f0e8;
+  --color-cream-muted: #9a9188;
+  --color-cream-subtle: rgba(245, 240, 232, 0.6);
+  
+  /* Shadows with warm tint */
+  --shadow-sm: 0 1px 2px 0 rgba(12, 11, 10, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(12, 11, 10, 0.4), 0 2px 4px -2px rgba(12, 11, 10, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(12, 11, 10, 0.4), 0 4px 6px -4px rgba(12, 11, 10, 0.3);
+  --shadow-glow: 0 0 40px rgba(201, 168, 124, 0.15);
 }
 
 html {
@@ -15,54 +25,74 @@ html {
 }
 
 body {
-  @apply bg-obsidian text-cream antialiased font-sans;
+  @apply text-cream antialiased font-sans;
+  background: linear-gradient(180deg, var(--color-obsidian) 0%, var(--color-obsidian-light) 50%, var(--color-obsidian) 100%);
   min-height: 100vh;
+  min-height: 100dvh;
   overflow-x: hidden;
   position: relative;
 }
 
-/* Noise texture overlay */
+/* Enhanced grain texture overlay */
 body::after {
   content: "";
   position: fixed;
   inset: 0;
   z-index: 9999;
   pointer-events: none;
-  opacity: 0.04;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-repeat: repeat;
-  background-size: 256px 256px;
+  background-size: 400px 400px;
 }
 
-/* Amber-tinted scrollbar */
+/* Refined warm scrollbar */
 ::-webkit-scrollbar {
-  width: 4px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0a0a0a;
+  background: var(--color-obsidian-light);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(200, 149, 108, 0.3);
+  background: rgba(201, 168, 124, 0.25);
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(200, 149, 108, 0.5);
+  background: rgba(201, 168, 124, 0.45);
 }
 
-/* Accent line utility */
+/* Accent line utility - now with animation */
 .accent-line {
-  width: 48px;
-  height: 1px;
-  background: var(--color-amber-gold);
+  width: 64px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-amber-gold), transparent);
+  position: relative;
+  overflow: hidden;
 }
 
-/* Nav link hover */
+.accent-line::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, var(--color-amber-gold-light), transparent);
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { transform: translateX(-100%); }
+  50% { transform: translateX(100%); }
+}
+
+/* Nav link with spring physics hover */
 .nav-link {
   position: relative;
   color: var(--color-cream-muted);
-  transition: color 0.3s ease;
+  transition: color 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  font-weight: 500;
+  letter-spacing: 0.02em;
 }
 
 .nav-link:hover {
@@ -72,36 +102,71 @@ body::after {
 .nav-link::after {
   content: "";
   position: absolute;
-  bottom: -2px;
+  bottom: -4px;
   left: 0;
   width: 0;
-  height: 1px;
-  background: var(--color-amber-gold);
-  transition: width 0.3s ease;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-amber-gold), var(--color-amber-gold-light));
+  transition: width 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .nav-link:hover::after {
   width: 100%;
 }
 
-/* CTA styles — sharp editorial edges */
+.nav-link:active {
+  transform: translateY(1px);
+}
+
+/* CTA styles — elevated with glass edge */
 .cta-amber {
   display: inline-flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.875rem 2rem;
-  background: var(--color-amber-gold);
+  padding: 1rem 2.25rem;
+  background: linear-gradient(135deg, var(--color-amber-gold), var(--color-amber-gold-light));
   color: var(--color-obsidian);
-  font-weight: 500;
-  letter-spacing: 0.05em;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  font-size: 0.8125rem;
-  transition: background 0.3s ease, transform 0.3s ease;
+  font-size: 0.75rem;
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  box-shadow: 0 4px 20px rgba(201, 168, 124, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.cta-amber::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
 }
 
 .cta-amber:hover {
-  background: #d4a57c;
-  transform: translateY(-1px);
+  background: linear-gradient(135deg, var(--color-amber-gold-light), #e0c9a8);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(201, 168, 124, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.cta-amber:hover::before {
+  transform: translateX(100%);
+}
+
+.cta-amber:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 2px 10px rgba(201, 168, 124, 0.3);
+}
+
+.cta-amber svg {
+  transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.cta-amber:hover svg {
+  transform: translateX(4px);
 }
 
 /* Custom animation for particle breathing effect */
@@ -121,14 +186,43 @@ body::after {
   animation: breath 8s ease-in-out infinite;
 }
 
-/* Responsive typography */
+/* Typography refinements */
+h1, h2, h3 {
+  text-wrap: balance;
+  letter-spacing: -0.02em;
+}
+
+p {
+  text-wrap: pretty;
+  max-width: 65ch;
+}
+
+/* Responsive typography scale */
 @media (max-width: 640px) {
+  h1 {
+    font-size: 2.5rem;
+    line-height: 1.1;
+  }
+  
   h2 {
     font-size: 2rem;
-    line-height: 1.2;
+    line-height: 1.15;
   }
+  
   p {
     font-size: 1rem;
-    line-height: 1.6;
+    line-height: 1.7;
   }
+}
+
+/* Focus states for accessibility */
+*:focus-visible {
+  outline: 2px solid var(--color-amber-gold);
+  outline-offset: 2px;
+}
+
+/* Selection color */
+::selection {
+  background: rgba(201, 168, 124, 0.3);
+  color: var(--color-cream);
 }

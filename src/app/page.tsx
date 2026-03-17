@@ -4,17 +4,19 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { SectionData } from "@/types";
 import ParticleModelViewer from "@/components/model-viewer";
-import { Playfair_Display, Libre_Franklin } from "next/font/google";
+import { Cormorant_Garamond, DM_Sans } from "next/font/google";
 
-// Font setup
-const playfair = Playfair_Display({
+// Font setup - editorial serif + clean geometric sans
+const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
-  variable: "--font-playfair",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-cormorant",
 });
 
-const libre = Libre_Franklin({
+const dmSans = DM_Sans({
   subsets: ["latin"],
-  variable: "--font-libre",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-dm-sans",
 });
 
 // Sections with amber-gold particle tones and editorial chapter names
@@ -116,45 +118,50 @@ const SECTIONS: SectionData[] = [
   },
 ];
 
-// Minimal editorial navbar
+// Refined editorial navbar
 const Navbar = ({ isScrolled }: { isScrolled: boolean }) => (
   <header
     className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
-      isScrolled ? "bg-obsidian/90 backdrop-blur-sm" : "bg-transparent"
+      isScrolled 
+        ? "bg-obsidian/80 backdrop-blur-md border-b border-cream/5" 
+        : "bg-transparent"
     }`}
   >
-    <div className="max-w-7xl mx-auto px-6 sm:px-8 py-5 flex items-center justify-between">
-      {/* Brand name — Playfair, uppercase, tracked */}
-      <a href="#hero" className="font-serif text-lg tracking-[0.2em] uppercase text-cream">
+    <div className="max-w-7xl mx-auto px-6 lg:px-12 py-6 flex items-center justify-between">
+      {/* Brand mark with refined typography */}
+      <a 
+        href="#hero" 
+        className="font-serif text-xl tracking-[0.15em] uppercase text-cream hover:text-amber-gold transition-colors duration-300"
+      >
         Particle
       </a>
 
-      {/* Navigation links */}
-      <nav className="hidden md:flex items-center space-x-8">
+      {/* Navigation links with improved spacing */}
+      <nav className="hidden md:flex items-center space-x-10">
         {SECTIONS.slice(1).map((section, idx) => (
           <a
             key={idx}
             href={`#${section.id}`}
-            className="nav-link text-sm tracking-wide"
+            className="nav-link text-sm"
           >
             {section.title.split(" ").slice(0, 2).join(" ")}
           </a>
         ))}
       </nav>
 
-      {/* Mobile menu button */}
+      {/* Mobile menu button with refined styling */}
       <div className="md:hidden">
-        <button className="text-cream-muted">
+        <button className="text-cream-muted hover:text-cream transition-colors p-2">
           <svg
-            className="w-5 h-5"
+            className="w-6 h-6"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
+            strokeWidth={1.5}
           >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              strokeWidth={1.5}
               d="M4 6h16M4 12h16M4 18h16"
             />
           </svg>
@@ -271,60 +278,71 @@ export default function Home() {
 
   return (
     <main
-      className={`relative bg-obsidian text-cream ${playfair.variable} ${libre.variable} font-sans`}
+      className={`relative bg-obsidian text-cream ${cormorant.variable} ${dmSans.variable} font-sans`}
     >
       {/* Navbar */}
       <Navbar isScrolled={isScrolled} />
 
-      {/* Typographic loading screen */}
+      {/* Refined typographic loading screen */}
       {isLoading && (
         <div className="fixed inset-0 z-50 bg-obsidian flex flex-col items-center justify-center">
           <div className="w-full max-w-xs flex flex-col items-center">
             <motion.h1
-              className="font-serif text-3xl tracking-[0.15em] uppercase text-cream mb-12"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1 }}
+              className="font-serif text-4xl tracking-[0.12em] uppercase text-cream mb-16 font-medium"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
             >
               Particle
             </motion.h1>
 
-            {/* Thin amber progress bar */}
-            <div className="w-full h-px bg-white/10 mb-4">
+            {/* Elegant progress bar with gradient */}
+            <div className="w-full h-[2px] bg-cream/10 mb-6 overflow-hidden rounded-full">
               <motion.div
-                className="h-full bg-amber-gold"
+                className="h-full bg-gradient-to-r from-amber-gold to-amber-gold-light"
                 initial={{ width: "0%" }}
                 animate={{ width: `${loadingProgress}%` }}
                 transition={{ duration: 0.3 }}
               />
             </div>
 
-            <p className="text-cream-muted text-xs tracking-[0.2em] uppercase">
+            <motion.p 
+              className="text-cream-muted/60 text-xs tracking-[0.25em] uppercase font-sans"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
               {Math.min(loadingProgress, 100)}%
-            </p>
+            </motion.p>
           </div>
         </div>
       )}
 
-      {/* Scroll progress bar — fixed vertical bar on left edge */}
+      {/* Enhanced scroll progress indicator */}
       {!isLoading && (
-        <div className="fixed left-8 top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col items-center gap-4">
-          {/* Chapter number */}
-          <span className="font-serif text-sm text-amber-gold">
+        <div className="fixed left-6 lg:left-8 top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col items-center gap-3">
+          {/* Current chapter with refined typography */}
+          <motion.span 
+            className="font-serif text-lg font-medium text-amber-gold tabular-nums"
+            key={activeSection}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+          >
             {String(activeSection + 1).padStart(2, "0")}
-          </span>
+          </motion.span>
 
-          {/* Vertical bar track */}
-          <div className="w-px h-48 bg-white/10 relative">
+          {/* Elegant vertical progress track */}
+          <div className="w-[2px] h-40 bg-cream/5 relative overflow-hidden rounded-full">
             <motion.div
-              className="absolute top-0 left-0 w-full bg-amber-gold origin-top"
+              className="absolute top-0 left-0 w-full bg-gradient-to-b from-amber-gold to-amber-gold-light origin-top"
               style={{ height: `${scrollProgress * 100}%` }}
-              transition={{ duration: 0.1 }}
+              transition={{ duration: 0.15, ease: "easeOut" }}
             />
           </div>
 
           {/* Total sections */}
-          <span className="text-xs text-cream-muted tracking-widest">
+          <span className="text-xs text-cream-muted/60 tracking-[0.15em] tabular-nums">
             {String(SECTIONS.length).padStart(2, "0")}
           </span>
         </div>
@@ -352,56 +370,60 @@ export default function Home() {
         >
           {/* Hero section */}
           {index === 0 ? (
-            <div className="relative w-full z-20 px-6 py-16 pt-32 md:pt-40">
-              <div className="max-w-7xl mx-auto">
+            <div className="relative w-full z-20 px-6 lg:px-12 py-16 pt-32 md:pt-40 min-h-screen flex items-center">
+              <div className="max-w-7xl mx-auto w-full">
                 <motion.div
-                  className="w-full max-w-lg space-y-8"
-                  initial={{ opacity: 0, y: 30 }}
+                  className="w-full max-w-2xl space-y-10"
+                  initial={{ opacity: 0, y: 40 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
+                  transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1], delay: 0.2 }}
                 >
-                  {/* Chapter label */}
-                  <motion.p
-                    className="text-amber-gold text-sm tracking-[0.3em] uppercase font-sans"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
+                  {/* Refined chapter label */}
+                  <motion.div
+                    className="flex items-center gap-4"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.6, delay: 0.3 }}
                   >
-                    Chapter 01
-                  </motion.p>
+                    <div className="w-12 h-px bg-amber-gold/50" />
+                    <p className="text-amber-gold text-xs tracking-[0.25em] uppercase font-sans font-medium">
+                      Chapter 01
+                    </p>
+                  </motion.div>
 
-                  {/* Massive serif headline */}
+                  {/* Editorial headline with improved typography */}
                   <motion.h1
-                    className="text-5xl md:text-7xl font-serif leading-[1.1] text-cream"
-                    initial={{ opacity: 0, y: 30 }}
+                    className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-serif font-medium leading-[0.95] text-cream tracking-tight"
+                    initial={{ opacity: 0, y: 40 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.4 }}
+                    transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1], delay: 0.4 }}
                   >
                     {section.title}
                   </motion.h1>
 
                   <motion.p
-                    className="text-lg md:text-xl leading-relaxed text-cream-muted"
+                    className="text-lg md:text-xl leading-relaxed text-cream-muted/80 max-w-xl font-sans font-normal"
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.5 }}
+                    transition={{ duration: 0.7, ease: [0.23, 1, 0.32, 1], delay: 0.5 }}
                   >
                     {section.description}
                   </motion.p>
 
-                  {/* Text CTA with arrow */}
+                  {/* Enhanced CTA */}
                   <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.6 }}
+                    transition={{ duration: 0.6, delay: 0.7 }}
+                    className="pt-4"
                   >
                     <a
                       href="#section-1"
-                      className="cta-amber"
+                      className="cta-amber group"
                     >
-                      Begin the Journey
+                      <span>Begin the Journey</span>
                       <svg
-                        className="w-4 h-4"
+                        className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -419,39 +441,48 @@ export default function Home() {
               </div>
             </div>
           ) : (
-            /* Content sections — text floats freely on left, no bg panels */
+            /* Content sections — asymmetric layout with refined typography */
             section.showTextSection && (
-              <div className="relative w-full z-20 px-6 py-16 md:py-0">
-                <div className="max-w-7xl mx-auto">
+              <div className="relative w-full z-20 px-6 lg:px-12 py-20 md:py-0 min-h-screen flex items-center">
+                <div className="max-w-7xl mx-auto w-full">
                   <motion.div
-                    className="w-full max-w-lg space-y-6"
-                    initial={{ opacity: 0, y: 30 }}
+                    className="w-full max-w-xl space-y-8"
+                    initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: false, amount: 0.3 }}
-                    transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
+                    transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1], delay: 0.1 }}
                   >
-                    {/* Large translucent chapter number */}
-                    <span className="block font-serif text-[8rem] leading-none text-white/[0.03] select-none -mb-16">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
+                    {/* Artistic chapter number with gradient */}
+                    <div className="relative">
+                      <span 
+                        className="block font-serif text-[10rem] md:text-[12rem] leading-none font-light select-none -mb-20 -ml-2"
+                        style={{
+                          background: 'linear-gradient(180deg, rgba(201, 168, 124, 0.08) 0%, rgba(201, 168, 124, 0.02) 100%)',
+                          WebkitBackgroundClip: 'text',
+                          WebkitTextFillColor: 'transparent',
+                        }}
+                      >
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                    </div>
 
-                    {/* Serif title */}
-                    <h2 className="text-4xl md:text-5xl font-serif leading-tight text-cream">
+                    {/* Editorial title with proper hierarchy */}
+                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-medium leading-[1.05] text-cream tracking-tight">
                       {section.title}
                     </h2>
 
-                    {/* Amber accent line */}
+                    {/* Animated accent line */}
                     <div className="accent-line" />
 
-                    {/* Description */}
-                    <p className="text-lg leading-relaxed text-cream-muted">
+                    {/* Refined description with optimal line length */}
+                    <p className="text-lg md:text-xl leading-relaxed text-cream-muted/80 font-sans">
                       {section.description}
                     </p>
 
-                    {/* Section indicator */}
-                    <div className="flex items-center space-x-3 pt-4">
-                      <div className="w-1.5 h-1.5 bg-amber-gold" />
-                      <span className="text-xs uppercase tracking-[0.2em] text-cream-muted">
+                    {/* Elegant section indicator */}
+                    <div className="flex items-center gap-4 pt-6">
+                      <div className="w-8 h-px bg-amber-gold/40" />
+                      <span className="text-xs uppercase tracking-[0.2em] text-cream-muted/60 font-sans">
                         {`${String(index).padStart(2, "0")} / ${String(SECTIONS.length - 1).padStart(2, "0")}`}
                       </span>
                     </div>

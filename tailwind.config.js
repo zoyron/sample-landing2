@@ -8,14 +8,23 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        obsidian: '#0a0a0a',
-        'amber-gold': '#c8956c',
-        cream: '#e8dcc8',
-        'cream-muted': '#a89a8a',
+        obsidian: {
+          DEFAULT: '#0c0b0a',
+          light: '#12100e',
+        },
+        'amber-gold': {
+          DEFAULT: '#c9a87c',
+          light: '#d4b896',
+        },
+        cream: {
+          DEFAULT: '#f5f0e8',
+          muted: '#9a9188',
+          subtle: 'rgba(245, 240, 232, 0.6)',
+        },
       },
       fontFamily: {
-        serif: ['var(--font-playfair)', 'serif'],
-        sans: ['var(--font-libre)', 'sans-serif'],
+        serif: ['var(--font-cormorant)', 'Cormorant Garamond', 'serif'],
+        sans: ['var(--font-dm-sans)', 'DM Sans', 'sans-serif'],
       },
       animation: {
         'spin-slow': 'spin 20s linear infinite',
