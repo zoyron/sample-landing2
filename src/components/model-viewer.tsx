@@ -1163,7 +1163,7 @@ export default function ParticleModelViewer({
     <div ref={containerRef} className={className || "w-full h-full"}>
       {isMultiModelMode && !allModelsLoaded && (
         <div className="absolute inset-0 flex items-center justify-center text-white">
-          <div className="text-center bg-black/30 p-4 rounded-lg backdrop-blur-sm">
+          <div className="text-center bg-obsidian/30 p-4 rounded-lg backdrop-blur-sm">
             <div className="mb-2">
               Loading Models ({Math.round(loadingProgress * 100)}%)
             </div>

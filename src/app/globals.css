@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 :root {
-  /* Refined warm-neutral palette */
-  --color-obsidian: #0c0b0a;
-  --color-obsidian-light: #12100e;
+  /* Refined dark blue palette */
+  --color-obsidian: #0d1b2a;
+  --color-obsidian-light: #1b263b;
   --color-amber-gold: #c9a87c;
   --color-amber-gold-light: #d4b896;
   --color-cream: #f5f0e8;

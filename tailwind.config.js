@@ -9,8 +9,8 @@ module.exports = {
     extend: {
       colors: {
         obsidian: {
-          DEFAULT: '#0c0b0a',
-          light: '#12100e',
+          DEFAULT: '#0d1b2a',
+          light: '#1b263b',
         },
         'amber-gold': {
           DEFAULT: '#c9a87c',

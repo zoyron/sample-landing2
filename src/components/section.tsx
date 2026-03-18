@@ -251,8 +251,8 @@ export default function Section({
               className={cn(
                 "w-full max-w-xl space-y-8 p-8 rounded-3xl",
                 isMobile
-                  ? "bg-black/50 border border-white/10"
-                  : "bg-black/60 border border-white/10",
+                  ? "bg-obsidian/50 border border-white/10"
+                  : "bg-obsidian/60 border border-white/10",
                 fullWidthModel && "md:mx-auto",
                 !fullWidthModel && !isMobile && reverse
                   ? "md:ml-auto"
@@ -322,7 +322,7 @@ export default function Section({
 
       {/* Loading indicator */}
       {!isModelLoaded && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black/80 z-5">
+        <div className="absolute inset-0 flex items-center justify-center bg-obsidian/80 z-5">
           <div className="flex flex-col items-center">
             <div
               className="w-12 h-12 rounded-full border-2 border-b-transparent border-l-transparent animate-spin mb-4"
